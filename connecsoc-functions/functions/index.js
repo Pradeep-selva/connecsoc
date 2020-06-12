@@ -77,6 +77,22 @@ app.post('/post', (req, res) => {
 
 })
 
+const isEmail = (email) => {
+    const emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$/i;
+
+    if (email.match(emailRegEx))
+        return true;
+    else
+        return false;
+}
+
+const isEmpty = (data) => {
+    if (data.trim() === '')
+        return true;
+    else
+        return false;
+}
+
 app.post('/signup', (req, res) => {
     const newUser = {
         handle: req.body.handle,
@@ -86,6 +102,24 @@ app.post('/signup', (req, res) => {
     }
 
     let uid, tok;
+
+    let errors = {}
+
+    if (isEmpty(newUser.email))
+        errors.email = 'Must not be empty';
+    else if (!(isEmail(newUser.email)))
+        errors.email = 'Must be a valid email';
+
+    if (isEmpty(newUser.password))
+        errors.password = 'Must not be empty';
+    if (newUser.password !== newUser.confirmPassword)
+        errors.confirmPassword = 'Confirm password does not match password';
+
+    if (isEmpty(newUser.handle))
+        errors.handle = 'Must not be empty';
+
+    if (Object.keys(errors).length > 0)
+        return res.status(400).json(errors)
 
     db.doc(`/users/${newUser.handle}`)
         .get()
@@ -118,8 +152,44 @@ app.post('/signup', (req, res) => {
             return res.status(200).json({ token: tok })
         })
         .catch(err => {
+            if (err.code === "auth/email-already-in-use")
+                return res.status(400).json({ error: "This email is already in use!" })
             return res.status(500).json({ error: err.code })
         })
+})
+
+app.post('/login', (req, res) => {
+    const user = {
+        email: req.body.email,
+        password: req.body.password
+    }
+
+    let errors = {}
+
+    if (isEmpty(user.email))
+        errors.email = 'must not be empty'
+    else if (!isEmail(user.email))
+        errors.email = 'must be a valid email'
+    if (isEmpty(user.password))
+        erros.password = 'must not be empty'
+
+    if (Object.keys(errors).length > 0)
+        return res.status(400).json(errors)
+
+    firebase.auth()
+        .signInWithEmailAndPassword(user.email, user.password)
+        .then((data) => {
+            return data.user.getIdToken();
+        })
+        .then((token) => {
+            return res.status(200).json({ token });
+        })
+        .catch((err) => {
+            if (err.code === "auth/wrong-password")
+                return res.status(400).json({ error: "Password and Email dont match" })
+            return res.status(500).json({ error: err.code })
+        })
+
 })
 
 
