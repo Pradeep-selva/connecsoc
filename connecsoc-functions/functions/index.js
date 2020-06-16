@@ -52,10 +52,38 @@ app.get('/posts', (req, res) => {
 
 })
 
-app.post('/post', (req, res) => {
+const authMiddleware = (req, res, next) => {
+    let token;
+
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+        token = req.headers.authorization.split('Bearer ')[1];
+    } else {
+        return res.status(403).json({ error: "unauthorized" });
+    }
+
+    admin.auth().verifyIdToken(token)
+        .then(decoded => {
+            req.user = decoded;
+            console.log(decoded)
+            return db.collection('users')
+                .where('uid', '==', req.user.uid)
+                .limit(1)
+                .get();
+        })
+        .then(data => {
+            req.user.handle = data.docs[0].data().handle;
+            return next();
+        })
+        .catch(err => {
+            return res.status(500).json(err)
+        })
+
+}
+
+app.post('/post', authMiddleware, (req, res) => {
 
     const newPost = {
-        userHandle: req.body.userHandle,
+        userHandle: req.user.handle,
         body: req.body.body,
         createdAt: new Date().toISOString()
     }
@@ -78,7 +106,7 @@ app.post('/post', (req, res) => {
 })
 
 const isEmail = (email) => {
-    const emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$/i;
+    const emailRegEx = /\S+@\S+\.\S+/;
 
     if (email.match(emailRegEx))
         return true;
