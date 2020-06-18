@@ -139,7 +139,7 @@ exports.imageUpload = (req, res) => {
             .then(() => {
                 const imgUrl = `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/${imgFileName}?alt=media`;
 
-                db.doc(`users/${req.user.handle}`)
+                return db.doc(`users/${req.user.handle}`)
                     .update({
                         imgUrl
                     });
