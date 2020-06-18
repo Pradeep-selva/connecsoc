@@ -9,7 +9,9 @@ const {
 const {
     signup,
     login,
-    imageUpload
+    imageUpload,
+    postUserData,
+    getUserData
 } = require('./handler/users');
 
 const authMiddleware = require('./utils/middleware');
@@ -21,6 +23,8 @@ app.post('/post', authMiddleware, pushOnePost);
 app.post('/signup', signup);
 app.post('/login', login);
 app.post('/user/image', authMiddleware, imageUpload);
+app.post('/user', authMiddleware, postUserData);
+app.get('/user', authMiddleware, getUserData);
 
 
 exports.api = functions.region('asia-east2').https.onRequest(app);

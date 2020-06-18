@@ -52,3 +52,23 @@ exports.loginDataValidator = (user) => {
         isValid: Object.keys(errors).length === 0 ? true : false
     }
 }
+
+exports.reduceUserData = (data) => {
+    let userData = {};
+
+    if (!isEmpty(data.bio))
+        userData.bio = data.bio;
+
+    if (!isEmpty(data.website)) {
+        let website = data.website;
+        if (website.substring(0, 4) !== "http")
+            userData.website = `http://${website}`;
+        else
+            userData.website = website;
+    }
+
+    if (!isEmpty(data.location))
+        userData.location = data.location;
+
+    return userData;
+}
