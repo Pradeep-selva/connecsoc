@@ -1,5 +1,6 @@
 const { db } = require('../utils/admin')
 
+// GET /posts
 exports.getAllPosts = (req, res) => {
 
     db.collection('posts')
@@ -25,6 +26,7 @@ exports.getAllPosts = (req, res) => {
 
 }
 
+// POST /post
 exports.pushOnePost = (req, res) => {
 
     const newPost = {

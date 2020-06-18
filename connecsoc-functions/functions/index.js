@@ -16,10 +16,11 @@ const {
 
 const authMiddleware = require('./utils/middleware');
 
-
+//post routes
 app.get('/posts', getAllPosts);
 app.post('/post', authMiddleware, pushOnePost);
 
+//user routes
 app.post('/signup', signup);
 app.post('/login', login);
 app.post('/user/image', authMiddleware, imageUpload);

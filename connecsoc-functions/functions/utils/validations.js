@@ -14,6 +14,7 @@ const isEmpty = (data) => {
         return false;
 }
 
+// POST /signup
 exports.signupDataValidator = (newUser) => {
     let errors = {}
 
@@ -37,6 +38,7 @@ exports.signupDataValidator = (newUser) => {
     }
 }
 
+// POST /login
 exports.loginDataValidator = (user) => {
     let errors = {}
 
@@ -53,6 +55,7 @@ exports.loginDataValidator = (user) => {
     }
 }
 
+// POST /user
 exports.reduceUserData = (data) => {
     let userData = {};
 

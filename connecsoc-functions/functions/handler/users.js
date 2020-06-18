@@ -9,7 +9,7 @@ const { signupDataValidator,
     loginDataValidator,
     reduceUserData } = require('../utils/validations')
 
-
+// POST /signup
 exports.signup = (req, res) => {
     const newUser = {
         handle: req.body.handle,
@@ -65,6 +65,7 @@ exports.signup = (req, res) => {
         })
 }
 
+// POST /login
 exports.login = (req, res) => {
     const user = {
         email: req.body.email,
@@ -93,6 +94,7 @@ exports.login = (req, res) => {
 
 }
 
+// POST /user
 exports.postUserData = (req, res) => {
     userData = reduceUserData(req.body);
 
@@ -107,6 +109,7 @@ exports.postUserData = (req, res) => {
         })
 }
 
+//GET /user
 exports.getUserData = (req, res) => {
     let userData = {};
 
@@ -135,6 +138,7 @@ exports.getUserData = (req, res) => {
         })
 }
 
+//POST /user/image
 exports.imageUpload = (req, res) => {
     const BusBoy = require('busboy');
     const path = require('path');
