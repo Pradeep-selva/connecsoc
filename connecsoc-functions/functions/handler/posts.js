@@ -38,10 +38,9 @@ exports.pushOnePost = (req, res) => {
     db.collection('posts')
         .add(newPost)
         .then(doc => {
-            res.status(201).json({
+            return res.status(201).json({
                 message: `document with id ${doc.id} has been created successfully.`
             });
-            return null;
         })
         .catch(err => {
             res.status(500).json({
@@ -79,5 +78,37 @@ exports.getOnePost = (req, res) => {
         .catch(err => {
             console.log(err);
             res.status(500).json({ error: err.code })
+        })
+}
+
+//POST /post/:postId/comment
+exports.pushPostComment = (req, res) => {
+    if (req.body.body.trim() === '')
+        return res.status(403).json({ error: 'Field cannot be empty' });
+
+    const commentData = {
+        bio: req.body.body,
+        createdAt: new Date().toISOString(),
+        postId: req.params.postId,
+        userHandle: req.user.handle,
+        userImg: req.user.image
+    };
+
+    db.doc(`/posts/${commentData.postId}`)
+        .get()
+        .then(doc => {
+            if (!doc.exists) {
+                return res.status(403).json({ error: "Post not found" });
+            }
+
+            return db.collection('comments')
+                .add(commentData);
+        })
+        .then(() => {
+            return res.status(201).json(commentData);
+        })
+        .catch(err => {
+            console.log(err);
+            return res.status(500).json({ error: err.code });
         })
 }
