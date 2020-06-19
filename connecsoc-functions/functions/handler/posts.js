@@ -51,3 +51,33 @@ exports.pushOnePost = (req, res) => {
         })
 
 }
+
+//GET /post/:postId
+exports.getOnePost = (req, res) => {
+    let postData = {};
+
+    db.doc(`/posts/${req.params.postId}`)
+        .get()
+        .then(doc => {
+            if (!doc.exists) {
+                return res.status(404).json({ error: "Post not found" });
+            }
+            postData = doc.data();
+            return db.collection('comments')
+                .orderBy('createdAt', 'desc')
+                .where('postId', '==', req.params.postId)
+                .get()
+        })
+        .then(data => {
+            postData.comments = [];
+
+            data.forEach(doc => {
+                postData.comments.push(doc.data());
+            })
+            return res.status(200).json(postData);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ error: err.code })
+        })
+}

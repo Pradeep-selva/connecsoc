@@ -3,7 +3,8 @@ const app = require('express')();
 
 const {
     getAllPosts,
-    pushOnePost
+    pushOnePost,
+    getOnePost,
 } = require('./handler/posts');
 
 const {
@@ -19,6 +20,8 @@ const authMiddleware = require('./utils/middleware');
 //post routes
 app.get('/posts', getAllPosts);
 app.post('/post', authMiddleware, pushOnePost);
+app.get('/post/:postId', authMiddleware, getOnePost);
+//app.post('/post/:postId/comment', authMiddleware, pushPostComment);
 
 //user routes
 app.post('/signup', signup);
