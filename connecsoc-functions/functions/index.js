@@ -5,7 +5,9 @@ const {
     getAllPosts,
     pushOnePost,
     getOnePost,
-    pushPostComment
+    pushPostComment,
+    likePost,
+    unlikePost
 } = require('./handler/posts');
 
 const {
@@ -23,9 +25,8 @@ app.get('/posts', getAllPosts);
 app.post('/post', authMiddleware, pushOnePost);
 app.get('/post/:postId', authMiddleware, getOnePost);
 app.post('/post/:postId/comment', authMiddleware, pushPostComment);
-//TODO:
-// app.get('/post/:postId/like', authMiddleware, likePost);
-// app.get('/post/:postId/unlike', authMiddleware, unlikePost);
+app.get('/post/:postId/like', authMiddleware, likePost);
+app.get('/post/:postId/unlike', authMiddleware, unlikePost);
 
 //user routes
 app.post('/signup', signup);
