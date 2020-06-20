@@ -31,16 +31,19 @@ exports.pushOnePost = (req, res) => {
 
     const newPost = {
         userHandle: req.user.handle,
+        userImg: req.user.image,
         body: req.body.body,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        likeCount: 0,
+        commentCount: 0
     }
 
     db.collection('posts')
         .add(newPost)
         .then(doc => {
-            return res.status(201).json({
-                message: `document with id ${doc.id} has been created successfully.`
-            });
+            const postData = newPost;
+            postData.id = doc.id;
+            return res.status(201).json(postData);
         })
         .catch(err => {
             res.status(500).json({
@@ -101,6 +104,11 @@ exports.pushPostComment = (req, res) => {
                 return res.status(403).json({ error: "Post not found" });
             }
 
+            return doc.ref.update({
+                commentCount: doc.data().commentCount + 1
+            })
+        })
+        .then(() => {
             return db.collection('comments')
                 .add(commentData);
         })
