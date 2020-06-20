@@ -84,6 +84,32 @@ exports.getOnePost = (req, res) => {
         })
 }
 
+//DELETE /post/:postId
+exports.deleteOnePost = (req, res) => {
+    const document = db.doc(`/posts/${req.params.postId}`);
+
+    document.get()
+        .then(doc => {
+            if (!doc.exists) {
+                return res.status(400).json({ error: "Post not found" });
+            }
+            if (doc.data().userHandle !== req.user.handle) {
+                return res.status(400).json({ error: "unauthorised" });
+            }
+            else {
+                return document.delete();
+            }
+        })
+        .then(() => {
+            return res.status(200).json({
+                message: "Post deleted succesfully"
+            });
+        })
+        .catch(err => {
+            return res.status(500).json({ error: err.code })
+        })
+}
+
 //POST /post/:postId/comment
 exports.pushPostComment = (req, res) => {
     if (req.body.body.trim() === '')

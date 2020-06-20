@@ -7,7 +7,8 @@ const {
     getOnePost,
     pushPostComment,
     likePost,
-    unlikePost
+    unlikePost,
+    deleteOnePost
 } = require('./handler/posts');
 
 const {
@@ -24,6 +25,7 @@ const authMiddleware = require('./utils/middleware');
 app.get('/posts', getAllPosts);
 app.post('/post', authMiddleware, pushOnePost);
 app.get('/post/:postId', authMiddleware, getOnePost);
+app.delete('/post/:postId', authMiddleware, deleteOnePost);
 app.post('/post/:postId/comment', authMiddleware, pushPostComment);
 app.get('/post/:postId/like', authMiddleware, likePost);
 app.get('/post/:postId/unlike', authMiddleware, unlikePost);
