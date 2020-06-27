@@ -1,8 +1,8 @@
 const functions = require('firebase-functions');
 const app = require('express')();
 
-const { db } = require('./utils/admin')
 
+//Imports
 const {
     getAllPosts,
     pushOnePost,
@@ -11,7 +11,7 @@ const {
     likePost,
     unlikePost,
     deleteOnePost
-} = require('./handler/posts');
+} = require('./handlers/posts');
 
 const {
     signup,
@@ -21,7 +21,15 @@ const {
     getUserData,
     getPublicUserDetails,
     markNotificationsRead
-} = require('./handler/users');
+} = require('./handlers/users');
+
+const {
+    on_like,
+    on_unlike,
+    on_comment,
+    on_user_image_update,
+    on_post_delete
+} = require('./handlers/db_triggers');
 
 const authMiddleware = require('./utils/middleware');
 
@@ -49,133 +57,24 @@ exports.api = functions.region('asia-east2').https.onRequest(app);
 exports.onLike = functions
     .region('asia-east2')
     .firestore.document(`likes/{id}`)
-    .onCreate(snapshot => {
-        return db.doc(`/posts/${snapshot.data().postId}`)
-            .get()
-            .then(doc => {
-                if (doc.exists && doc.data().userHandle !== snapshot.data().userHandle) {
-                    const notificationData = {
-                        createdAt: new Date().toISOString(),
-                        recipient: doc.data().userHandle,
-                        sender: snapshot.data().userHandle,
-                        read: false,
-                        type: 'like',
-                        postId: doc.id
-                    }
-                    return db.doc(`notifications/${snapshot.id}`).set(notificationData)
-                } else {
-                    return;
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    })
+    .onCreate(on_like);
 
 exports.onUnlike = functions
     .region('asia-east2')
     .firestore.document(`likes/{id}`)
-    .onDelete(snapshot => {
-        return db.doc(`notifications/${snapshot.id}`)
-            .delete()
-            .then(() => {
-                return;
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    })
+    .onDelete(on_unlike);
 
 exports.onComment = functions
     .region('asia-east2')
     .firestore.document(`comments/{id}`)
-    .onCreate(snapshot => {
-        return db.doc(`/posts/${snapshot.data().postId}`)
-            .get()
-            .then(doc => {
-                if (doc.exists && doc.data().userHandle !== snapshot.data().userHandle) {
-                    const notificationData = {
-                        createdAt: new Date().toISOString(),
-                        recipient: doc.data().userHandle,
-                        sender: snapshot.data().userHandle,
-                        read: false,
-                        type: 'comment',
-                        postId: doc.id
-                    }
-                    return db.doc(`notifications/${snapshot.id}`).set(notificationData)
-                } else {
-                    return;
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    })
+    .onCreate(on_comment);
 
 exports.onUserImageUpdate = functions
     .region('asia-east2')
     .firestore.document(`/users/{id}`)
-    .onUpdate(change => {
-        console.log(change.before.data().imgUrl);
-        console.log(change.after.data().imgUrl);
-
-        if (change.after.data().imgurl !== change.before.data().imgUrl) {
-            const batch = db.batch()
-            console.log("user image changed")
-
-            db.collection('posts')
-                .where('userHandle', '==', change.before.data().handle)
-                .get()
-                .then(data => {
-                    data.forEach(doc => {
-                        console.log(doc.id)
-                        const post = db.doc(`posts/${doc.id}`)
-                        batch.update(post, { userImg: change.after.data().imgUrl })
-                    })
-                    return batch.commit()
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        } else {
-            console.log("user image not changed")
-            return true;
-        }
-    })
+    .onUpdate(on_user_image_update);
 
 exports.onPostDelete = functions
     .region('asia-east2')
     .firestore.document(`/posts/{postId}`)
-    .onDelete((snapshot, context) => {
-        const postId = context.params.postId;
-        const batch = db.batch()
-
-        return db.collection('likes')
-            .where('postId', '==', postId)
-            .get()
-            .then(data => {
-                data.forEach(doc => {
-                    batch.delete(db.doc(`likes/${doc.id}`))
-                })
-                return db.collection('comments')
-                    .where('postId', '==', postId)
-                    .get()
-            })
-            .then(data => {
-                data.forEach(doc => {
-                    batch.delete(db.doc(`comments/${doc.id}`))
-                })
-                return db.collection('notifications')
-                    .where('postId', '==', postId)
-                    .get()
-            })
-            .then(data => {
-                data.forEach(doc => {
-                    batch.delete(db.doc(`notifications/${doc.id}`))
-                })
-                return batch.commit()
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    })
+    .onDelete(on_post_delete);
