@@ -51,7 +51,7 @@ app.get('/user', authMiddleware, getUserData);
 app.get('/user/:handle', getPublicUserDetails);
 app.post('/notifications', authMiddleware, markNotificationsRead);
 
-
+//Exporting firebase functions
 exports.api = functions.region('asia-east2').https.onRequest(app);
 
 exports.onLike = functions

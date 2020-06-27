@@ -1,5 +1,6 @@
 const { db } = require('../utils/admin')
 
+//db trigger when like doc is created
 exports.on_like = (snapshot) => {
     return db.doc(`/posts/${snapshot.data().postId}`)
         .get()
@@ -23,6 +24,7 @@ exports.on_like = (snapshot) => {
         })
 }
 
+//db trigger when like doc is deleted
 exports.on_unlike = (snapshot) => {
     return db.doc(`notifications/${snapshot.id}`)
         .delete()
@@ -34,6 +36,7 @@ exports.on_unlike = (snapshot) => {
         })
 }
 
+//db trigger when comment doc is created
 exports.on_comment = (snapshot) => {
     return db.doc(`/posts/${snapshot.data().postId}`)
         .get()
@@ -57,6 +60,7 @@ exports.on_comment = (snapshot) => {
         })
 }
 
+//db trigger when like user doc is updated
 exports.on_user_image_update = (change) => {
     console.log(change.before.data().imgUrl);
     console.log(change.after.data().imgUrl);
@@ -85,6 +89,7 @@ exports.on_user_image_update = (change) => {
     }
 }
 
+//db trigger when post doc is deleted
 exports.on_post_delete = (snapshot, context) => {
     const postId = context.params.postId;
     const batch = db.batch()
