@@ -132,7 +132,11 @@ exports.getPublicUserDetails = (req, res) => {
             data.forEach(doc => {
                 userData.posts.push({
                     postId: doc.id,
-                    ...doc.data()
+                    userHandle: doc.data().userHandle,
+                    likeCount: doc.data().likeCount,
+                    commentCount: doc.data().commentCount,
+                    body: doc.data().body,
+                    createdAt: doc.data().createdAt
                 })
             })
 
@@ -175,7 +179,12 @@ exports.getUserData = (req, res) => {
             data.forEach(doc => {
                 userData.notifications.push({
                     notificationId: doc.id,
-                    ...doc.data()
+                    read: doc.data().read,
+                    postId: doc.data().postId,
+                    createdAt: doc.data().createdAt,
+                    recipient: doc.data().recipient,
+                    sender: doc.data().sender,
+                    type: doc.data().type
                 });
             })
 
