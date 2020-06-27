@@ -109,6 +109,41 @@ exports.postUserData = (req, res) => {
         })
 }
 
+//GET /user/:handle
+exports.getPublicUserDetails = (req, res) => {
+    let userData = {}
+
+    db.doc(`users/${req.params.handle}`)
+        .get()
+        .then(doc => {
+            if (doc.exists) {
+                userData.user = doc.data();
+                return db.collection('posts')
+                    .where('userHandle', '==', req.params.handle)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+            } else {
+                return res.status(400).json({ error: "User not found" })
+            }
+        })
+        .then(data => {
+            userData.posts = []
+
+            data.forEach(doc => {
+                userData.posts.push({
+                    postId: doc.id,
+                    ...doc.data()
+                })
+            })
+
+            return res.status(200).json(userData);
+        })
+        .catch(err => {
+            console.log(err);
+            return res.status(500).json({ error: err.code })
+        })
+}
+
 //GET /user
 exports.getUserData = (req, res) => {
     let userData = {};
@@ -128,6 +163,20 @@ exports.getUserData = (req, res) => {
             userData.likes = [];
             data.forEach(doc => {
                 userData.likes.push(doc.data());
+            })
+
+            return db.collection('notifications')
+                .where('recipient', '==', req.user.handle)
+                .orderBy('createdAt', 'desc')
+                .get()
+        })
+        .then(data => {
+            userData.notifications = [];
+            data.forEach(doc => {
+                userData.notifications.push({
+                    notificationId: doc.id,
+                    ...doc.data()
+                });
             })
 
             return res.status(200).json(userData);
@@ -203,4 +252,23 @@ exports.imageUpload = (req, res) => {
 
     busboy.end(req.rawBody);
 
+}
+
+//POST /notifications
+exports.markNotificationsRead = (req, res) => {
+    let batch = db.batch();
+
+    req.body.forEach(notificationId => {
+        const notification = db.doc(`notifications/${notificationId}`)
+        batch.update(notification, { read: true })
+    })
+
+    batch.commit()
+        .then(() => {
+            return res.status(200).json({ message: "Notifications marked read" })
+        })
+        .catch(err => {
+            console.log(err)
+            return res.status(500).json({ error: err.code })
+        })
 }

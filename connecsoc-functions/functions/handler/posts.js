@@ -149,6 +149,7 @@ exports.pushPostComment = (req, res) => {
 
 //GET /post/:postId/like
 exports.likePost = (req, res) => {
+    console.log(req.params.postId)
     const likeDoc = db.collection('likes')
         .where('postId', '==', req.params.postId)
         .where('userHandle', '==', req.user.handle)
@@ -160,6 +161,7 @@ exports.likePost = (req, res) => {
     postDoc.get()
         .then(doc => {
             if (doc.exists) {
+                console.log(doc.data())
                 postData = doc.data();
                 postData.id = doc.id;
                 return likeDoc.get();
