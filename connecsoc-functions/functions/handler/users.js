@@ -87,9 +87,8 @@ exports.login = (req, res) => {
             return res.status(200).json({ token });
         })
         .catch((err) => {
-            if (err.code === "auth/wrong-password")
-                return res.status(400).json({ error: "Password and Email dont match" })
-            return res.status(500).json({ error: err.code })
+            console.log(err)
+            return res.status(400).json({ general: "Wrong credentials entered" })
         })
 
 }

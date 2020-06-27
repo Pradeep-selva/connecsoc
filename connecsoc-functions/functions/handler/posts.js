@@ -13,7 +13,11 @@ exports.getAllPosts = (req, res) => {
                 posts.push({
                     postId: doc.id,
                     handle: doc.data().userHandle,
-                    body: doc.data().body
+                    body: doc.data().body,
+                    createdAt: doc.data().createdAt,
+                    commentCount: doc.data().commentCount,
+                    likeCount: doc.data().likeCount,
+                    userImg: doc.data().userImg
                 });
             });
 
@@ -113,7 +117,7 @@ exports.deleteOnePost = (req, res) => {
 //POST /post/:postId/comment
 exports.pushPostComment = (req, res) => {
     if (req.body.body.trim() === '')
-        return res.status(403).json({ error: 'Field cannot be empty' });
+        return res.status(403).json({ comment: 'Must not empty' });
 
     const commentData = {
         bio: req.body.body,
