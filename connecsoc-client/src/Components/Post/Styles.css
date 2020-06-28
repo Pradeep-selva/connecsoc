@@ -1,0 +1,15 @@
+.MuiCard-root{
+    display: flex;
+    margin-bottom: 10px;
+    margin-right: 30px;
+}
+
+.MuiCardMedia-img{
+    max-width: 150px;
+    padding: 10px;
+    object-fit: cover;
+}
+
+.MuiCardContent-root{
+    padding:20px;
+}

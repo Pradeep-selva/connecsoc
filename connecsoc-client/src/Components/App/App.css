@@ -1,0 +1,13 @@
+body {
+  background-color: #f0f5f3;
+}
+
+.container{
+  margin: 90px auto 0 auto;
+  max-width: 1200px;
+}
+
+a{
+  text-decoration: none;
+
+}
