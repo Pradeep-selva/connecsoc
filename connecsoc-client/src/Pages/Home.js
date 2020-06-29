@@ -34,7 +34,7 @@ export class Home extends Component {
         const { posts, errors } = this.state
 
         let recentPosts = posts && !errors ? (
-            posts.map((post) => <Post post={post} />)
+            posts.map((post) => <Post key={post.postId} post={post} />)
         ) :
             (
                 <p>Loading...</p>

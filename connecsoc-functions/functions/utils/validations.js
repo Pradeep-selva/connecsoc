@@ -47,7 +47,7 @@ exports.loginDataValidator = (user) => {
     else if (!isEmail(user.email))
         errors.email = 'must be a valid email';
     if (isEmpty(user.password))
-        erros.password = 'must not be empty';
+        errors.password = 'must not be empty';
 
     return {
         errors,

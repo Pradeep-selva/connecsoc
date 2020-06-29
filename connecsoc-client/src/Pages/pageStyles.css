@@ -1,0 +1,30 @@
+.form{
+    text-align: center;
+}
+
+.title{
+    font-family: 'Alata', sans-serif;
+    margin: 10px auto 20px auto;
+}
+
+#button{
+    margin: 20px auto 10px auto;
+}
+
+.login{
+    padding-top: 10rem;
+}
+
+#text-field{
+    margin: auto 15px auto 15px;
+}
+
+#error{
+    color: red;
+    font-size: small;
+    padding-top: 10px;
+}
+
+#progress{
+    position: absolute;
+}

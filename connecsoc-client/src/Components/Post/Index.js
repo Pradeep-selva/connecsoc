@@ -1,11 +1,12 @@
 import React from 'react'
 import { Card, CardContent, CardMedia, Typography } from '@material-ui/core'
 import { Link } from 'react-router-dom'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import './Styles.css'
 
 const Post = ({ post }) => {
     const {
-        postId,
         handle,
         body,
         createdAt,
@@ -14,13 +15,15 @@ const Post = ({ post }) => {
         userImg
     } = post
 
+    dayjs.extend(relativeTime)
+
     return (
         <div>
             <Card>
                 <CardMedia
-                    component="img" i
-                    mage={userImg} t
-                    itle="Profile picture" />
+                    component="img"
+                    image={userImg}
+                    title="Profile picture" />
                 <CardContent>
                     <Typography
                         color="primary"
@@ -31,7 +34,7 @@ const Post = ({ post }) => {
                     <Typography
                         variant="body2"
                         color="textSecondary">
-                        {createdAt.substring(0, 10)}
+                        {dayjs(createdAt).fromNow()}
                     </Typography>
                     <Typography variant="body1">
                         {body}
