@@ -1,12 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
+import jwtDecode from 'jwt-decode'
 import './App.css';
 
 import Navbar from '../Navbar/Index'
 import Home from '../../Pages/Home'
 import Login from '../../Pages/Login'
 import Signup from '../../Pages/Signup'
+import AuthRoute from '../../Components/AuthRoute/Index'
 
 const theme = createMuiTheme({
   palette: {
@@ -25,6 +27,20 @@ const theme = createMuiTheme({
   }
 })
 
+let isAuthenticated;
+const token = localStorage.AuthToken;
+
+if (token) {
+  const decoded = jwtDecode(token)
+
+  if (decoded.exp * 1000 < Date.now()) {
+    isAuthenticated = false;
+    window.location.href = '/login';
+  } else {
+    isAuthenticated = true;
+  }
+}
+
 
 const App = () =>
   <MuiThemeProvider theme={theme}>
@@ -33,9 +49,17 @@ const App = () =>
         <Navbar />
         <Switch>
           <div className="container">
-            <Route exact path='/' component={Home} />
-            <Route exact path='/login' component={Login} />
-            <Route exact path='/signup' component={Signup} />
+            <Route
+              exact path='/'
+              component={Home} />
+            <AuthRoute
+              exact path='/login'
+              component={Login}
+              isAuthenticated={isAuthenticated} />
+            <AuthRoute
+              exact path='/signup'
+              component={Signup}
+              isAuthenticated={isAuthenticated} />
           </div>
         </Switch>
       </Router>

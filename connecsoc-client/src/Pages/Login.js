@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { FaAddressCard } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 import { Typography, TextField, Grid, Button, CircularProgress } from '@material-ui/core'
 import axios from 'axios'
 import './pageStyles.css'
@@ -40,6 +41,7 @@ export class Login extends Component {
                     loading: false,
                     errors: {}
                 })
+                localStorage.setItem('AuthToken', `Bearer ${res.data.token}`)
                 this.props.history.push('/')
             })
             .catch(err => {
@@ -117,6 +119,10 @@ export class Login extends Component {
                                     }
 
                                 </Button>
+                                <br />
+                                <small>
+                                    Don't have an account? Sign up <Link to="/signup">here</Link>
+                                </small>
                             </form>
                         </div>
                     </Grid>
