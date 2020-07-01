@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import { FaAddressCard } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { Typography, TextField, Grid, Button, CircularProgress } from '@material-ui/core'
-import axios from 'axios'
 import './pageStyles.css'
+
+import { connect } from 'react-redux'
+import { loginUser } from '../redux/actions/userActions'
 
 
 export class Login extends Component {
@@ -14,8 +16,7 @@ export class Login extends Component {
         this.state = {
             email: '',
             password: '',
-            errors: {},
-            loading: false
+            errors: {}
         }
 
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -26,31 +27,13 @@ export class Login extends Component {
         event.preventDefault()
         console.log("submitted login form")
 
-        this.setState({
-            loading: true
-        })
         const userData = {
             email: this.state.email,
             password: this.state.password
         }
 
-        axios.post('/login', userData)
-            .then(res => {
-                console.log(res.data)
-                this.setState({
-                    loading: false,
-                    errors: {}
-                })
-                localStorage.setItem('AuthToken', `Bearer ${res.data.token}`)
-                this.props.history.push('/')
-            })
-            .catch(err => {
-                console.log(err.response.data)
-                this.setState({
-                    loading: false,
-                    errors: err.response.data
-                })
-            })
+        this.props.loginUser(userData, this.props.history)
+
     }
 
     onChange = (event) => {
@@ -59,13 +42,23 @@ export class Login extends Component {
         })
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.UI.errors) {
+            this.setState({
+                errors: nextProps.UI.errors
+            })
+        }
+    }
+
     render() {
         const {
             email,
             password,
-            loading,
             errors
         } = this.state
+
+        const { UI: { loading } } = this.props
+
         return (
             <div>
                 <Grid container className="form">
@@ -133,4 +126,14 @@ export class Login extends Component {
     }
 }
 
-export default Login
+const mapStateToProps = (state) => ({
+    user: state.user,
+    UI: state.UI
+})
+
+const mapActionsToProps = {
+    loginUser
+}
+
+
+export default connect(mapStateToProps, mapActionsToProps)(Login)

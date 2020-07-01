@@ -10,6 +10,9 @@ import Login from '../../Pages/Login'
 import Signup from '../../Pages/Signup'
 import AuthRoute from '../../Components/AuthRoute/Index'
 
+import { Provider } from 'react-redux'
+import store from '../../redux/store'
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -33,7 +36,7 @@ const token = localStorage.AuthToken;
 if (token) {
   const decoded = jwtDecode(token)
 
-  if (decoded.exp * 1000 < Date.now()) {
+  if (decoded.exp * 1001 < Date.now()) {
     isAuthenticated = false;
     window.location.href = '/login';
   } else {
@@ -44,26 +47,28 @@ if (token) {
 
 const App = () =>
   <MuiThemeProvider theme={theme}>
-    <div className="App">
-      <Router>
-        <Navbar />
-        <Switch>
-          <div className="container">
-            <Route
-              exact path='/'
-              component={Home} />
-            <AuthRoute
-              exact path='/login'
-              component={Login}
-              isAuthenticated={isAuthenticated} />
-            <AuthRoute
-              exact path='/signup'
-              component={Signup}
-              isAuthenticated={isAuthenticated} />
-          </div>
-        </Switch>
-      </Router>
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <Router>
+          <Navbar />
+          <Switch>
+            <div className="container">
+              <Route
+                exact path='/'
+                component={Home} />
+              <AuthRoute
+                exact path='/login'
+                component={Login}
+                isAuthenticated={isAuthenticated} />
+              <AuthRoute
+                exact path='/signup'
+                component={Signup}
+                isAuthenticated={isAuthenticated} />
+            </div>
+          </Switch>
+        </Router>
+      </div>
+    </Provider>
   </MuiThemeProvider>
 
 
