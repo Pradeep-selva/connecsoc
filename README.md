@@ -8,3 +8,4 @@ A full stack, serverless social media website, built with react and firebase.
 * Firebase authentication setup
 * Backend complete
 * React routing and frontend basic setup
+* Redux setup
