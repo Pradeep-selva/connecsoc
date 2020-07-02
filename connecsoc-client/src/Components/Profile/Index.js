@@ -5,6 +5,7 @@ import { MdModeEdit } from 'react-icons/md'
 import { Paper, Typography, Button, IconButton, Tooltip } from '@material-ui/core'
 import MuiLink from '@material-ui/core/Link'
 import dayjs from 'dayjs'
+import EditDetails from '../EditDetails/Index'
 import './Styles.css'
 
 import { connect } from 'react-redux'
@@ -126,6 +127,7 @@ const Profile = (props) => {
                                 {" "}Joined {dayjs(createdAt).format('MMM YYYY')}
                             </span>
                         </div>
+                        <EditDetails />
                     </div>
                 </Paper >
             )
