@@ -1,4 +1,4 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI } from '../types'
+import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED } from '../types'
 import axios from 'axios'
 
 export const loginUser = (userData, history) => (dispatch) => {
@@ -9,9 +9,7 @@ export const loginUser = (userData, history) => (dispatch) => {
     axios.post('/login', userData)
         .then(res => {
             console.log(res.data)
-            const Authentication = `Bearer ${res.data.token}`
-            localStorage.setItem('AuthToken', Authentication)
-            axios.defaults.headers.common["Authorization"] = Authentication
+            setToken(res.data.token)
             dispatch(getUser())
             dispatch({
                 type: CLEAR_ERRORS
@@ -27,6 +25,39 @@ export const loginUser = (userData, history) => (dispatch) => {
         })
 }
 
+export const signupUser = (userData, history) => (dispatch) => {
+    dispatch({
+        type: LOADING_UI
+    })
+
+    axios.post('/signup', userData)
+        .then(res => {
+            console.log(res.data)
+            setToken(res.data.token)
+            dispatch(getUser())
+            dispatch({
+                type: CLEAR_ERRORS
+            })
+            history.push('/')
+        })
+        .catch(err => {
+            console.log(err.response.data)
+            dispatch({
+                type: SET_ERRORS,
+                payload: err.response.data
+            })
+        })
+}
+
+export const logoutUser = () => (dispatch) => {
+    localStorage.removeItem('AuthToken')
+    delete axios.defaults.headers.common['Authorization']
+
+    dispatch({
+        type: SET_UNAUTHENTICATED
+    })
+}
+
 export const getUser = () => (dispatch) => {
     axios.get('/user')
         .then(res => {
@@ -36,4 +67,10 @@ export const getUser = () => (dispatch) => {
             })
         })
         .catch(err => console.log(err))
+}
+
+const setToken = (token) => {
+    const Authentication = `Bearer ${token}`
+    localStorage.setItem('AuthToken', Authentication)
+    axios.defaults.headers.common["Authorization"] = Authentication
 }

@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import { FiUserPlus } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import { Typography, TextField, Grid, Button, CircularProgress } from '@material-ui/core'
-import axios from 'axios'
 import './pageStyles.css'
+
+import { connect } from 'react-redux'
+import { signupUser } from '../redux/actions/userActions'
 
 
 export class Signup extends Component {
@@ -17,7 +19,6 @@ export class Signup extends Component {
             confirmPassword: '',
             handle: '',
             errors: {},
-            loading: false
         }
 
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -28,9 +29,6 @@ export class Signup extends Component {
         event.preventDefault()
         console.log("submitted login form")
 
-        this.setState({
-            loading: true
-        })
         const userData = {
             email: this.state.email,
             password: this.state.password,
@@ -38,23 +36,7 @@ export class Signup extends Component {
             handle: this.state.handle
         }
 
-        axios.post('/signup', userData)
-            .then(res => {
-                console.log(res.data)
-                this.setState({
-                    loading: false,
-                    errors: {}
-                })
-                localStorage.setItem('AuthToken', `Bearer ${res.data.token}`)
-                this.props.history.push('/')
-            })
-            .catch(err => {
-                console.log(err.response.data)
-                this.setState({
-                    loading: false,
-                    errors: err.response.data
-                })
-            })
+        this.props.signupUser(userData, this.props.history)
     }
 
     onChange = (event) => {
@@ -63,15 +45,25 @@ export class Signup extends Component {
         })
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.UI.errors) {
+            this.setState({
+                errors: nextProps.UI.errors
+            })
+        }
+    }
+
     render() {
         const {
             email,
             password,
             confirmPassword,
             handle,
-            loading,
             errors
         } = this.state
+
+        const { UI: { loading } } = this.props
+
         return (
             <div>
                 <Grid container className="form">
@@ -161,4 +153,13 @@ export class Signup extends Component {
     }
 }
 
-export default Signup
+const mapStateToProps = (state) => ({
+    user: state.user,
+    UI: state.UI
+})
+
+const mapActionsToProps = {
+    signupUser
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(Signup)
