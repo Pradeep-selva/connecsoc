@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { Grid } from '@material-ui/core'
 import Post from '../Components/Post/Index'
+import Profile from '../Components/Profile/Index'
 
 
 export class Home extends Component {
@@ -47,8 +48,7 @@ export class Home extends Component {
                         {recentPosts}
                     </Grid>
                     <Grid item sm={4} xs={12}>
-                        <h2>User Profile</h2>
-                        <h5>* Add stuff</h5>
+                        <Profile />
                     </Grid>
                 </Grid>
             </div>
