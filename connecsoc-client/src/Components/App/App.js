@@ -38,7 +38,7 @@ const token = localStorage.AuthToken;
 if (token) {
   const decoded = jwtDecode(token)
 
-  if (decoded.exp * 1001 < Date.now()) {
+  if (decoded.exp * 1000 < Date.now()) {
     store.dispatch(logoutUser())
     window.location.href = '/login';
   } else {

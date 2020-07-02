@@ -44,10 +44,10 @@ export class Home extends Component {
         return (
             <div>
                 <Grid container spacing={30}>
-                    <Grid item sm={8} xs={12}>
+                    <Grid item md={8} sm={6} xs={12}>
                         {recentPosts}
                     </Grid>
-                    <Grid item sm={4} xs={12}>
+                    <Grid item md={4} sm={6} xs={12}>
                         <Profile />
                     </Grid>
                 </Grid>

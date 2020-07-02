@@ -1,12 +1,27 @@
 import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { FaCalendarAlt, FaSearchLocation, FaGlobe } from 'react-icons/fa'
-import { Paper, Typography, Button } from '@material-ui/core'
+import { MdModeEdit } from 'react-icons/md'
+import { Paper, Typography, Button, IconButton, Tooltip } from '@material-ui/core'
 import MuiLink from '@material-ui/core/Link'
 import dayjs from 'dayjs'
 import './Styles.css'
 
 import { connect } from 'react-redux'
+import { uploadImage } from '../../redux/actions/userActions'
+
+const handleImageChange = (event, uploadImage) => {
+    const image = event.target.files[0]
+    const formData = new FormData()
+
+    formData.append('image', image, image.name)
+    uploadImage(formData)
+}
+
+const handleClick = () => {
+    const imageUpload = document.getElementById("inputFile")
+    imageUpload.click()
+}
 
 const Profile = (props) => {
     const {
@@ -21,7 +36,8 @@ const Profile = (props) => {
             },
             loading,
             authenticated
-        }
+        },
+        uploadImage
     } = props
 
     if (loading) {
@@ -31,8 +47,24 @@ const Profile = (props) => {
         if (authenticated) {
             return (
                 <Paper>
-                    <div className="image">
-                        <img src={imgUrl} alt="profile image" />
+                    <div className="image-wrapper">
+                        <img src={imgUrl} alt="profile image" className="image" />
+                    </div>
+                    <input
+                        type="file"
+                        id="inputFile"
+                        hidden="hidden"
+                        onChange={(event) => handleImageChange(event, uploadImage)}
+                    />
+                    <div className="img-edit">
+                        <Tooltip
+                            title="Edit profile picture"
+                            position="bottom"
+                        >
+                            <IconButton onClick={handleClick}>
+                                <MdModeEdit size={30} style={{ color: "52a178" }} />
+                            </IconButton>
+                        </Tooltip>
                     </div>
                     <hr />
                     <div className="profile">
@@ -131,4 +163,8 @@ const mapStateToProps = state => ({
     user: state.user
 })
 
-export default connect(mapStateToProps)(Profile)
+const mapActionsToProps = {
+    uploadImage
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(Profile)
