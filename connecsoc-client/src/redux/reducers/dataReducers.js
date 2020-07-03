@@ -28,10 +28,9 @@ export default function (state = initialState, action) {
         case LIKE_POST:
         case UNLIKE_POST:
             let index = state.posts.findIndex(
-                post => post.postId === action.payload.postId
+                post => post.id === action.payload.id
             )
             state.posts[index] = action.payload
-
             return {
                 ...state
             }

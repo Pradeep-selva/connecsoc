@@ -41,19 +41,16 @@ export default function (state = initialState, action) {
                     ...state.likes,
                     {
                         userHandle: state.credentials.handle,
-                        postId: action.payload.postId
+                        postId: action.payload.id
                     }
                 ]
             }
         case UNLIKE_POST:
-            let filteredLikes = state.likes.filter(
-                like => like.postId === action.payload.postId
-            )
             return {
                 ...state,
-                likes: [
-                    ...filteredLikes
-                ]
+                likes: state.likes.filter(
+                    like => like.postId !== action.payload.id
+                )
             }
         default:
             return state

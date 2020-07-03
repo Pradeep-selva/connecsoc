@@ -19,7 +19,7 @@ export const getPosts = () => (dispatch) => {
             })
         })
         .catch(err => {
-            console.log(err.response.data)
+            console.log(err)
             dispatch({
                 type: SET_POSTS,
                 payload: []
@@ -35,7 +35,7 @@ export const likePost = (postId) => (dispatch) => {
                 payload: res.data
             })
         })
-        .catch(err => console.log(err.response.data))
+        .catch(err => console.log(err))
 }
 
 export const unlikePost = (postId) => (dispatch) => {
@@ -46,5 +46,5 @@ export const unlikePost = (postId) => (dispatch) => {
                 payload: res.data
             })
         })
-        .catch(err => console.log(err.response.data))
+        .catch(err => console.log(err))
 }

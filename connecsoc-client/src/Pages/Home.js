@@ -14,9 +14,15 @@ export class Home extends Component {
 
     render() {
         const { posts, loading } = this.props
+        let c = 0;
 
         let recentPosts = !loading ? (
-            posts.map((post) => <Post key={post.postId} post={post} />)
+            posts.map((post) => (
+                <div>
+                    <Post key={post.id} post={post} index={c++} />
+                </div>
+            ))
+
         ) :
             (
                 <p>Loading...</p>
