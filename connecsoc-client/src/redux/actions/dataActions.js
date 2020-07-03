@@ -1,0 +1,50 @@
+import axios from 'axios'
+import {
+    LOADING_POSTS,
+    SET_POSTS,
+    LIKE_POST,
+    UNLIKE_POST
+} from '../types'
+
+
+export const getPosts = () => (dispatch) => {
+    dispatch({
+        type: LOADING_POSTS
+    })
+    axios.get('/posts')
+        .then(res => {
+            dispatch({
+                type: SET_POSTS,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            console.log(err.response.data)
+            dispatch({
+                type: SET_POSTS,
+                payload: []
+            })
+        })
+}
+
+export const likePost = (postId) => (dispatch) => {
+    axios.get(`/post/${postId}/like`)
+        .then(res => {
+            dispatch({
+                type: LIKE_POST,
+                payload: res.data
+            })
+        })
+        .catch(err => console.log(err.response.data))
+}
+
+export const unlikePost = (postId) => (dispatch) => {
+    axios.get(`/post/${postId}/unlike`)
+        .then(res => {
+            dispatch({
+                type: UNLIKE_POST,
+                payload: res.data
+            })
+        })
+        .catch(err => console.log(err.response.data))
+}
