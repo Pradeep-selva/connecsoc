@@ -1,7 +1,19 @@
 import React, { Fragment } from 'react'
-import { AppBar, Toolbar, Button, Typography, IconButton } from '@material-ui/core'
+import {
+    AppBar,
+    Toolbar,
+    Button,
+    Typography,
+    IconButton,
+    Tooltip
+} from '@material-ui/core'
 import { NavLink } from 'react-router-dom'
-import { FaConnectdevelop } from 'react-icons/fa'
+import {
+    FaConnectdevelop,
+    FaPlusCircle,
+    FaHome,
+    FaBell
+} from 'react-icons/fa'
 import './Styles.css'
 
 import { connect } from 'react-redux'
@@ -28,11 +40,38 @@ const Navbar = (props) =>
                 {
                     props.authenticated ? (
                         <Fragment>
-                            <Button
-                                color="inherit"
-                                component={NavLink} to="/">
-                                Home
-                        </Button>
+                            <div style={{ flexGrow: 1 }}>
+                                <Tooltip
+                                    title="Add post"
+                                >
+                                    <IconButton
+                                        color="inherit"
+                                    >
+                                        <FaPlusCircle />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip
+                                    title="Home"
+                                >
+                                    <IconButton
+                                        color="inherit"
+                                        component={NavLink} to="/"
+                                    >
+                                        <FaHome />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip
+                                    title="Notifications"
+                                >
+                                    <IconButton
+                                        color="inherit"
+                                    >
+                                        <FaBell />
+                                    </IconButton>
+                                </Tooltip>
+
+
+                            </div>
                             <Button
                                 color="inherit"
                                 onClick={props.logoutUser}
