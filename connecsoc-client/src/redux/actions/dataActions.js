@@ -4,8 +4,19 @@ import {
     SET_POSTS,
     LIKE_POST,
     UNLIKE_POST,
-    DELETE_POST
+    DELETE_POST,
+    LOADING_UI,
+    ADD_POST,
+    SET_ERRORS,
+    CLEAR_ERRORS
 } from '../types'
+
+const fixPost = (post) => {
+    if (post['userHandle']) {
+
+    }
+    return post
+}
 
 
 export const getPosts = () => (dispatch) => {
@@ -48,6 +59,36 @@ export const unlikePost = (postId) => (dispatch) => {
             })
         })
         .catch(err => console.log(err))
+}
+
+export const addPost = (postData) => (dispatch) => {
+    dispatch({
+        type: LOADING_UI
+    })
+
+    axios.post('/post', postData)
+        .then(res => {
+            const post = res.data
+
+            Object.defineProperty(post, 'handle',
+                Object.getOwnPropertyDescriptor(post, 'userHandle'))
+            delete post['userHandle']
+
+            dispatch({
+                type: ADD_POST,
+                payload: post
+            })
+
+            dispatch({
+                type: CLEAR_ERRORS
+            })
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: err.response.data
+            })
+        })
 }
 
 export const deletePost = (postId) => (dispatch) => {

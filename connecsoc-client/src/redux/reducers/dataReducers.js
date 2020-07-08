@@ -3,13 +3,14 @@ import {
     LOADING_POSTS,
     LIKE_POST,
     UNLIKE_POST,
-    DELETE_POST
+    DELETE_POST,
+    ADD_POST,
 } from '../types'
 
 const initialState = {
     posts: [],
     post: {},
-    loading: false
+    loading: false,
 }
 
 export default function (state = initialState, action) {
@@ -26,6 +27,15 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: true
+            }
+
+        case ADD_POST:
+            return {
+                ...state,
+                posts: [
+                    action.payload,
+                    ...state.posts
+                ]
             }
 
         case LIKE_POST:

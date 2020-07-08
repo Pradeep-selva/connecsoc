@@ -10,12 +10,12 @@ import {
 import { NavLink } from 'react-router-dom'
 import {
     FaConnectdevelop,
-    FaPlusCircle,
     FaHome,
     FaBell
 } from 'react-icons/fa'
 import './Styles.css'
 import Logout from '../Logout/Index'
+import AddPost from '../AddPost/Index'
 
 import { connect } from 'react-redux'
 
@@ -41,15 +41,7 @@ const Navbar = (props) =>
                     props.authenticated ? (
                         <Fragment>
                             <div style={{ flexGrow: 1 }}>
-                                <Tooltip
-                                    title="Add post"
-                                >
-                                    <IconButton
-                                        color="inherit"
-                                    >
-                                        <FaPlusCircle />
-                                    </IconButton>
-                                </Tooltip>
+                                <AddPost />
                                 <Tooltip
                                     title="Home"
                                 >
@@ -69,8 +61,6 @@ const Navbar = (props) =>
                                         <FaBell />
                                     </IconButton>
                                 </Tooltip>
-
-
                             </div>
                             <Logout />
                         </Fragment>
