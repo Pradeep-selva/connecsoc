@@ -2,7 +2,8 @@ import {
     SET_POSTS,
     LOADING_POSTS,
     LIKE_POST,
-    UNLIKE_POST
+    UNLIKE_POST,
+    DELETE_POST
 } from '../types'
 
 const initialState = {
@@ -20,11 +21,13 @@ export default function (state = initialState, action) {
                 posts: action.payload,
                 loading: false
             }
+
         case LOADING_POSTS:
             return {
                 ...state,
                 loading: true
             }
+
         case LIKE_POST:
         case UNLIKE_POST:
             let index = state.posts.findIndex(
@@ -34,6 +37,13 @@ export default function (state = initialState, action) {
             return {
                 ...state
             }
+
+        case DELETE_POST:
+            return {
+                ...state,
+                posts: state.posts.filter((post) => post.id !== action.payload)
+            };
+
         default:
             return state
     }

@@ -22,18 +22,22 @@ export default function (state = initialState, action) {
                 ...state,
                 authenticated: true,
             }
+
         case SET_UNAUTHENTICATED:
             return initialState
+
         case SET_USER:
             return {
                 ...action.payload,
                 authenticated: true,
             }
+
         case LOADING_USER:
             return {
                 ...state,
                 loading: true
             }
+
         case LIKE_POST:
             return {
                 ...state,
@@ -45,6 +49,7 @@ export default function (state = initialState, action) {
                     }
                 ]
             }
+
         case UNLIKE_POST:
             return {
                 ...state,
@@ -52,6 +57,7 @@ export default function (state = initialState, action) {
                     like => like.postId !== action.payload.id
                 )
             }
+
         default:
             return state
     }

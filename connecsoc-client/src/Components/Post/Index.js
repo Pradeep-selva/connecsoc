@@ -9,6 +9,8 @@ import './Styles.css'
 import { connect } from 'react-redux'
 import { likePost, unlikePost } from '../../redux/actions/dataActions'
 
+import DeleteBtn from '../DeleteBtn/Index'
+
 const isLiked = (likes, postId) => {
     if (likes && likes.find(like => like.postId === postId)) {
         return true
@@ -16,7 +18,6 @@ const isLiked = (likes, postId) => {
         return false
     }
 }
-
 
 const Post = (props) => {
     const {
@@ -27,6 +28,7 @@ const Post = (props) => {
             createdAt,
             userImg
         },
+        userHandle,
         likes,
         authenticated,
         likePost,
@@ -72,6 +74,13 @@ const Post = (props) => {
                 )
         )
 
+    let deleteButton = userHandle === handle ? (
+        <DeleteBtn
+            id={id}
+        />
+    ) : null
+
+
     return (
         <div>
             <Card>
@@ -80,6 +89,7 @@ const Post = (props) => {
                     image={userImg}
                     title="Profile picture" />
                 <CardContent>
+                    {deleteButton}
                     <Typography
                         color="primary"
                         variant="h5"
@@ -118,6 +128,7 @@ const Post = (props) => {
 }
 
 const mapStateToProps = state => ({
+    userHandle: state.user.credentials.handle,
     likes: state.user.likes,
     authenticated: state.user.authenticated,
     posts: state.data.posts
