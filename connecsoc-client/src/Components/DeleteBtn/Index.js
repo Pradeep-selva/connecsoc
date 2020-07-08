@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import './Styles.css'
 
 import {
     Dialog,
@@ -55,6 +56,7 @@ class DeleteBtn extends Component {
                 >
                     <IconButton
                         onClick={this.handleOpen}
+                        id="delete"
                     >
                         <FaRegTrashAlt style={{ color: '#d10a0a' }} />
                     </IconButton>
