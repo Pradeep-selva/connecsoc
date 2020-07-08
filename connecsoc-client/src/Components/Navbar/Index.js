@@ -15,9 +15,9 @@ import {
     FaBell
 } from 'react-icons/fa'
 import './Styles.css'
+import Logout from '../Logout/Index'
 
 import { connect } from 'react-redux'
-import { logoutUser } from '../../redux/actions/userActions'
 
 
 const Navbar = (props) =>
@@ -72,12 +72,7 @@ const Navbar = (props) =>
 
 
                             </div>
-                            <Button
-                                color="inherit"
-                                onClick={props.logoutUser}
-                            >
-                                Logout
-                        </Button>
+                            <Logout />
                         </Fragment>
                     ) : (
                             <Fragment>
@@ -103,8 +98,4 @@ const mapStateToProps = state => ({
     authenticated: state.user.authenticated
 })
 
-const mapActionsToProps = {
-    logoutUser
-}
-
-export default connect(mapStateToProps, mapActionsToProps)(Navbar)
+export default connect(mapStateToProps)(Navbar)
