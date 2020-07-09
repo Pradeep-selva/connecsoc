@@ -1,7 +1,8 @@
 import {
     SET_ERRORS,
     CLEAR_ERRORS,
-    LOADING_UI
+    LOADING_UI,
+    STOP_LOADING
 } from '../types'
 
 const initialState = {
@@ -16,16 +17,25 @@ export default function (state = initialState, action) {
                 loading: false,
                 errors: action.payload
             }
+
         case CLEAR_ERRORS:
             return {
                 loading: false,
                 errors: {}
             }
+
         case LOADING_UI:
             return {
                 ...state,
                 loading: true
             }
+
+        case STOP_LOADING:
+            return {
+                ...state,
+                loading: false
+            }
+
         default:
             return state
     }

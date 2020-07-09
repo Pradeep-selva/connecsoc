@@ -40,7 +40,8 @@ class AddPost extends Component {
 
     handleClose = () => {
         this.setState({
-            open: false
+            open: false,
+            errors: {}
         })
     }
 

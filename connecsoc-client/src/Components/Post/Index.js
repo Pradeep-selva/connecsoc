@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { likePost, unlikePost } from '../../redux/actions/dataActions'
 
 import DeleteBtn from '../DeleteBtn/Index'
+import ExpandPost from '../ExpandPost/Index'
 
 const isLiked = (likes, postId) => {
     if (likes && likes.find(like => like.postId === postId)) {
@@ -120,6 +121,7 @@ const Post = (props) => {
                     <span>
                         {commentCount} comments
                     </span>
+                    <ExpandPost postId={id} />
                 </CardContent>
             </Card>
         </div>

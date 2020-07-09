@@ -4,7 +4,7 @@ import {
     SET_USER,
     LOADING_USER,
     LIKE_POST,
-    UNLIKE_POST
+    UNLIKE_POST,
 } from '../types'
 
 const initialState = {

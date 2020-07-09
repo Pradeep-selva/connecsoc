@@ -8,7 +8,9 @@ import {
     LOADING_UI,
     ADD_POST,
     SET_ERRORS,
-    CLEAR_ERRORS
+    CLEAR_ERRORS,
+    SET_POST,
+    STOP_LOADING
 } from '../types'
 
 const fixPost = (post) => {
@@ -99,6 +101,25 @@ export const deletePost = (postId) => (dispatch) => {
             dispatch({
                 type: DELETE_POST,
                 payload: postId
+            })
+        })
+        .catch(err => console.log(err))
+}
+
+export const getPost = (postId) => (dispatch) => {
+    dispatch({
+        type: LOADING_UI
+    })
+
+    axios.get(`/post/${postId}`)
+        .then(res => {
+            dispatch({
+                type: SET_POST,
+                payload: res.data
+            })
+
+            dispatch({
+                type: STOP_LOADING
             })
         })
         .catch(err => console.log(err))
