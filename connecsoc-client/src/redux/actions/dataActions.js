@@ -44,6 +44,8 @@ export const getPosts = () => (dispatch) => {
 export const likePost = (postId) => (dispatch) => {
     axios.get(`/post/${postId}/like`)
         .then(res => {
+            res.data = changeUserKey(res.data)
+
             dispatch({
                 type: LIKE_POST,
                 payload: res.data
@@ -55,6 +57,8 @@ export const likePost = (postId) => (dispatch) => {
 export const unlikePost = (postId) => (dispatch) => {
     axios.get(`/post/${postId}/unlike`)
         .then(res => {
+            res.data = changeUserKey(res.data)
+
             dispatch({
                 type: UNLIKE_POST,
                 payload: res.data
@@ -72,9 +76,7 @@ export const addPost = (postData) => (dispatch) => {
         .then(res => {
             const post = res.data
 
-            Object.defineProperty(post, 'handle',
-                Object.getOwnPropertyDescriptor(post, 'userHandle'))
-            delete post['userHandle']
+            post = changeUserKey(post)
 
             dispatch({
                 type: ADD_POST,
@@ -113,6 +115,9 @@ export const getPost = (postId) => (dispatch) => {
 
     axios.get(`/post/${postId}`)
         .then(res => {
+            res.data['id'] = postId
+            res.data = changeUserKey(res.data)
+
             dispatch({
                 type: SET_POST,
                 payload: res.data
@@ -123,4 +128,12 @@ export const getPost = (postId) => (dispatch) => {
             })
         })
         .catch(err => console.log(err))
+}
+
+const changeUserKey = (data) => {
+    Object.defineProperty(data, 'handle',
+        Object.getOwnPropertyDescriptor(data, 'userHandle'))
+    delete data['userHandle']
+
+    return data
 }

@@ -50,9 +50,20 @@ export default function (state = initialState, action) {
             let index = state.posts.findIndex(
                 post => post.id === action.payload.id
             )
-            state.posts[index] = action.payload
+
+            let newPosts = state.posts
+            newPosts[index] = action.payload
+            let newPost = state.posts
+
+            if (state.post.id === action.payload.id)
+                newPost = action.payload
+
             return {
-                ...state
+                ...state,
+                posts: [
+                    ...newPosts
+                ],
+                post: newPost
             }
 
         case DELETE_POST:

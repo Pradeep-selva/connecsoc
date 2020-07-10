@@ -1,24 +1,31 @@
 import React from 'react'
-import { Card, CardContent, CardMedia, Typography, Tooltip, IconButton, Button } from '@material-ui/core'
-import { FaCommentDots, FaStar, FaRegStar } from 'react-icons/fa'
+import {
+    Card,
+    CardContent,
+    CardMedia,
+    Typography,
+    Tooltip,
+    IconButton,
+} from '@material-ui/core'
+import { FaCommentDots } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import './Styles.css'
 
 import { connect } from 'react-redux'
-import { likePost, unlikePost } from '../../redux/actions/dataActions'
 
+import LikeButton from '../LikeButton/Index'
 import DeleteBtn from '../DeleteBtn/Index'
 import ExpandPost from '../ExpandPost/Index'
 
-const isLiked = (likes, postId) => {
-    if (likes && likes.find(like => like.postId === postId)) {
-        return true
-    } else {
-        return false
-    }
-}
+// const isLiked = (likes, postId) => {
+//     if (likes && likes.find(like => like.postId === postId)) {
+//         return true
+//     } else {
+//         return false
+//     }
+// }
 
 const Post = (props) => {
     const {
@@ -30,10 +37,6 @@ const Post = (props) => {
             userImg
         },
         userHandle,
-        likes,
-        authenticated,
-        likePost,
-        unlikePost,
         index
     } = props
 
@@ -41,39 +44,39 @@ const Post = (props) => {
 
     dayjs.extend(relativeTime)
 
-    let likeButton = !authenticated ? (
-        <Tooltip title="You need to be logged in to like">
-            <IconButton
-                component={Link} to="/login">
-                <FaRegStar
-                    size={20}
-                    style={{ color: "3ca4b0" }}
-                />
-            </IconButton>
-        </Tooltip>
-    ) : (
-            isLiked(likes, id) ? (
-                <Tooltip title="Unlike post">
-                    <IconButton
-                        onClick={() => unlikePost(id)}>
-                        <FaStar
-                            size={20}
-                            style={{ color: "3ca4b0" }}
-                        />
-                    </IconButton>
-                </Tooltip>
-            ) : (
-                    <Tooltip title="Like post">
-                        <IconButton
-                            onClick={() => likePost(id)}>
-                            <FaRegStar
-                                size={20}
-                                style={{ color: "3ca4b0" }}
-                            />
-                        </IconButton>
-                    </Tooltip>
-                )
-        )
+    // let likeButton = !authenticated ? (
+    //     <Tooltip title="You need to be logged in to like">
+    //         <IconButton
+    //             component={Link} to="/login">
+    //             <FaRegStar
+    //                 size={20}
+    //                 style={{ color: "3ca4b0" }}
+    //             />
+    //         </IconButton>
+    //     </Tooltip>
+    // ) : (
+    //         isLiked(likes, id) ? (
+    //             <Tooltip title="Unlike post">
+    //                 <IconButton
+    //                     onClick={() => unlikePost(id)}>
+    //                     <FaStar
+    //                         size={20}
+    //                         style={{ color: "3ca4b0" }}
+    //                     />
+    //                 </IconButton>
+    //             </Tooltip>
+    //         ) : (
+    //                 <Tooltip title="Like post">
+    //                     <IconButton
+    //                         onClick={() => likePost(id)}>
+    //                         <FaRegStar
+    //                             size={20}
+    //                             style={{ color: "3ca4b0" }}
+    //                         />
+    //                     </IconButton>
+    //                 </Tooltip>
+    //             )
+    //     )
 
     let deleteButton = userHandle === handle ? (
         <DeleteBtn
@@ -106,7 +109,7 @@ const Post = (props) => {
                         {body}
                     </Typography>
                     <hr />
-                    {likeButton}
+                    <LikeButton id={id} />
                     <span>
                         {likeCount} likes
                     </span>
@@ -131,14 +134,7 @@ const Post = (props) => {
 
 const mapStateToProps = state => ({
     userHandle: state.user.credentials.handle,
-    likes: state.user.likes,
-    authenticated: state.user.authenticated,
     posts: state.data.posts
 })
 
-const mapActionsToProps = {
-    likePost,
-    unlikePost
-}
-
-export default connect(mapStateToProps, mapActionsToProps)(Post)
+export default connect(mapStateToProps)(Post)

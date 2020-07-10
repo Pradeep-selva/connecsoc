@@ -13,10 +13,12 @@ import {
     Grid,
     CircularProgress
 } from '@material-ui/core'
-import { FaExpandAlt, FaRegWindowClose } from 'react-icons/fa'
+import { FaExpandAlt, FaRegWindowClose, FaCommentDots } from 'react-icons/fa'
 
 import { connect } from 'react-redux'
 import { getPost } from '../../redux/actions/dataActions'
+
+import LikeButton from '../LikeButton/Index'
 
 class ExpandPost extends Component {
     constructor(props) {
@@ -48,8 +50,9 @@ class ExpandPost extends Component {
         const { open } = this.state
         const {
             post: {
+                id,
                 createdAt,
-                userHandle,
+                handle,
                 likeCount,
                 body,
                 commentCount,
@@ -82,10 +85,10 @@ class ExpandPost extends Component {
                         <Typography
                             variant="h5"
                             component={Link}
-                            to={`/user/${userHandle}`}
+                            to={`/user/${handle}`}
                             color="primary"
                         >
-                            @{userHandle}
+                            @{handle}
                         </Typography>
                         <Typography
                             variant="body2"
@@ -95,6 +98,21 @@ class ExpandPost extends Component {
                         </Typography>
                         <hr />
                         {body}
+                        <br />
+                        <br />
+                        <LikeButton id={id} />
+                        <span>{likeCount} likes</span>
+                        <Tooltip title="Post comment">
+                            <IconButton>
+                                <FaCommentDots
+                                    size={20}
+                                    style={{ color: "3ca4b0" }}
+                                />
+                            </IconButton>
+                        </Tooltip>
+                        <span>
+                            {commentCount} comments
+                    </span>
                     </Grid>
                 </Grid>
             )
