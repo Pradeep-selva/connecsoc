@@ -13,13 +13,6 @@ import {
     STOP_LOADING
 } from '../types'
 
-const fixPost = (post) => {
-    if (post['userHandle']) {
-
-    }
-    return post
-}
-
 
 export const getPosts = () => (dispatch) => {
     dispatch({
@@ -74,7 +67,7 @@ export const addPost = (postData) => (dispatch) => {
 
     axios.post('/post', postData)
         .then(res => {
-            const post = res.data
+            let post = res.data
 
             post = changeUserKey(post)
 

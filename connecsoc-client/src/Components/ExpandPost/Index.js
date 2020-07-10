@@ -6,7 +6,6 @@ import './Styles.css'
 import {
     Tooltip,
     IconButton,
-    Button,
     Dialog,
     DialogContent,
     Typography,
@@ -19,6 +18,7 @@ import { connect } from 'react-redux'
 import { getPost } from '../../redux/actions/dataActions'
 
 import LikeButton from '../LikeButton/Index'
+import Comments from '../Comments/Index'
 
 class ExpandPost extends Component {
     constructor(props) {
@@ -76,45 +76,54 @@ class ExpandPost extends Component {
                 <br />
             </Fragment>
         ) : (
-                <Grid container spacing={16}>
-                    <Grid item sm={5} xs={12}>
-                        <img src={userImg} alt="profile picture" id="profile" />
-                    </Grid>
+                <Fragment>
+                    <Grid container spacing={16}>
+                        <Grid item sm={5} xs={12}>
+                            <img src={userImg} alt="profile picture" id="profile" />
+                        </Grid>
 
-                    <Grid item sm={7} xs={12}>
-                        <Typography
-                            variant="h5"
-                            component={Link}
-                            to={`/user/${handle}`}
-                            color="primary"
-                        >
-                            @{handle}
-                        </Typography>
-                        <Typography
-                            variant="body2"
-                            color="textSecondary"
-                        >
-                            {dayjs(createdAt).format('h:mm a, MMM DD YYYY')}
-                        </Typography>
-                        <hr />
-                        {body}
-                        <br />
-                        <br />
-                        <LikeButton id={id} />
-                        <span>{likeCount} likes</span>
-                        <Tooltip title="Post comment">
-                            <IconButton>
-                                <FaCommentDots
-                                    size={20}
-                                    style={{ color: "3ca4b0" }}
-                                />
-                            </IconButton>
-                        </Tooltip>
-                        <span>
-                            {commentCount} comments
+                        <Grid item sm={7} xs={12}>
+                            <Typography
+                                variant="h5"
+                                component={Link}
+                                to={`/user/${handle}`}
+                                color="primary"
+                            >
+                                @{handle}
+                            </Typography>
+                            <Typography
+                                variant="body2"
+                                color="textSecondary"
+                            >
+                                {dayjs(createdAt).format('h:mm a, MMM DD YYYY')}
+                            </Typography>
+                            <hr />
+                            {body}
+                            <br />
+                            <br />
+                            <LikeButton id={id} />
+                            <span>{likeCount} likes</span>
+                            <Tooltip title="Post comment">
+                                <IconButton>
+                                    <FaCommentDots
+                                        size={20}
+                                        style={{ color: "3ca4b0" }}
+                                    />
+                                </IconButton>
+                            </Tooltip>
+                            <span>
+                                {commentCount} comments
                     </span>
+                        </Grid>
                     </Grid>
-                </Grid>
+                    <br />
+                    <Typography
+                        variant="h6"
+                        color="primary">
+                        Comments
+                    </Typography>
+                    <Comments comments={comments} />
+                </Fragment>
             )
 
         return (
