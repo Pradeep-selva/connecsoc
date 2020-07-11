@@ -19,14 +19,6 @@ import LikeButton from '../LikeButton/Index'
 import DeleteBtn from '../DeleteBtn/Index'
 import ExpandPost from '../ExpandPost/Index'
 
-// const isLiked = (likes, postId) => {
-//     if (likes && likes.find(like => like.postId === postId)) {
-//         return true
-//     } else {
-//         return false
-//     }
-// }
-
 const Post = (props) => {
     const {
         post: {
@@ -43,40 +35,6 @@ const Post = (props) => {
     const { likeCount, commentCount } = props.posts[index]
 
     dayjs.extend(relativeTime)
-
-    // let likeButton = !authenticated ? (
-    //     <Tooltip title="You need to be logged in to like">
-    //         <IconButton
-    //             component={Link} to="/login">
-    //             <FaRegStar
-    //                 size={20}
-    //                 style={{ color: "3ca4b0" }}
-    //             />
-    //         </IconButton>
-    //     </Tooltip>
-    // ) : (
-    //         isLiked(likes, id) ? (
-    //             <Tooltip title="Unlike post">
-    //                 <IconButton
-    //                     onClick={() => unlikePost(id)}>
-    //                     <FaStar
-    //                         size={20}
-    //                         style={{ color: "3ca4b0" }}
-    //                     />
-    //                 </IconButton>
-    //             </Tooltip>
-    //         ) : (
-    //                 <Tooltip title="Like post">
-    //                     <IconButton
-    //                         onClick={() => likePost(id)}>
-    //                         <FaRegStar
-    //                             size={20}
-    //                             style={{ color: "3ca4b0" }}
-    //                         />
-    //                     </IconButton>
-    //                 </Tooltip>
-    //             )
-    //     )
 
     let deleteButton = userHandle === handle ? (
         <DeleteBtn

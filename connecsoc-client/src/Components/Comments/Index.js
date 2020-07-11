@@ -8,7 +8,7 @@ import { Typography, Grid } from '@material-ui/core'
 const Comments = ({ comments }) =>
     <Grid container spacing={12}>
         {
-            comments.map((comment, index) => {
+            comments.map(comment => {
                 const {
                     bio,
                     createdAt,

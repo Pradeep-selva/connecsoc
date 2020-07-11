@@ -56,7 +56,10 @@ export default function (state = initialState, action) {
             let newPost = state.posts
 
             if (state.post.id === action.payload.id)
-                newPost = action.payload
+                newPost = {
+                    ...action.payload,
+                    comments: state.post.comments
+                }
 
             return {
                 ...state,
