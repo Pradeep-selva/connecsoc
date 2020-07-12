@@ -10,8 +10,18 @@ import {
     SET_ERRORS,
     CLEAR_ERRORS,
     SET_POST,
-    STOP_LOADING
+    STOP_LOADING,
+    ADD_COMMENT
 } from '../types'
+
+
+const changeUserKey = (data) => {
+    Object.defineProperty(data, 'handle',
+        Object.getOwnPropertyDescriptor(data, 'userHandle'))
+    delete data['userHandle']
+
+    return data
+}
 
 
 export const getPosts = () => (dispatch) => {
@@ -123,10 +133,23 @@ export const getPost = (postId) => (dispatch) => {
         .catch(err => console.log(err))
 }
 
-const changeUserKey = (data) => {
-    Object.defineProperty(data, 'handle',
-        Object.getOwnPropertyDescriptor(data, 'userHandle'))
-    delete data['userHandle']
+export const commentOnPost = (postId, commentData) => (dispatch) => {
 
-    return data
+    axios.post(`/post/${postId}/comment`, commentData)
+        .then(res => {
+            dispatch({
+                type: ADD_COMMENT,
+                payload: res.data
+            })
+
+            dispatch({
+                type: CLEAR_ERRORS
+            })
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: err.response.data
+            })
+        })
 }

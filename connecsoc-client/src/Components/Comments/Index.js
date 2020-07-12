@@ -1,12 +1,14 @@
 import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
+import AddComment from '../AddComment/Index'
 import './Styles.css'
 
 import { Typography, Grid } from '@material-ui/core'
 
-const Comments = ({ comments }) =>
-    <Grid container spacing={12}>
+const Comments = ({ comments, postId }) =>
+    <Grid container spacing={12} id="comment-grid">
+        <AddComment postId={postId} />
         {
             comments.map(comment => {
                 const {

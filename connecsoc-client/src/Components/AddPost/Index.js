@@ -111,7 +111,7 @@ class AddPost extends Component {
                                 multiline
                                 rows="3"
                                 fullWidth
-                                errors={errors && errors.body}
+                                error={errors && errors.body}
                                 helperText={errors.body}
                                 onChange={this.handleChange}
                             />
