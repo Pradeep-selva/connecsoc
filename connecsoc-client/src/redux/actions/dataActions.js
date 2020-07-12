@@ -15,10 +15,10 @@ import {
 } from '../types'
 
 
-const changeUserKey = (data) => {
-    Object.defineProperty(data, 'handle',
-        Object.getOwnPropertyDescriptor(data, 'userHandle'))
-    delete data['userHandle']
+const changeObjKey = (data, newKey, oldKey) => {
+    Object.defineProperty(data, newKey,
+        Object.getOwnPropertyDescriptor(data, oldKey))
+    delete data[oldKey]
 
     return data
 }
@@ -47,7 +47,7 @@ export const getPosts = () => (dispatch) => {
 export const likePost = (postId) => (dispatch) => {
     axios.get(`/post/${postId}/like`)
         .then(res => {
-            res.data = changeUserKey(res.data)
+            res.data = changeObjKey(res.data, 'handle', 'userHandle')
 
             dispatch({
                 type: LIKE_POST,
@@ -60,7 +60,7 @@ export const likePost = (postId) => (dispatch) => {
 export const unlikePost = (postId) => (dispatch) => {
     axios.get(`/post/${postId}/unlike`)
         .then(res => {
-            res.data = changeUserKey(res.data)
+            res.data = changeObjKey(res.data, 'handle', 'userHandle')
 
             dispatch({
                 type: UNLIKE_POST,
@@ -79,7 +79,7 @@ export const addPost = (postData) => (dispatch) => {
         .then(res => {
             let post = res.data
 
-            post = changeUserKey(post)
+            post = changeObjKey(post, 'handle', 'userHandle')
 
             dispatch({
                 type: ADD_POST,
@@ -119,7 +119,7 @@ export const getPost = (postId) => (dispatch) => {
     axios.get(`/post/${postId}`)
         .then(res => {
             res.data['id'] = postId
-            res.data = changeUserKey(res.data)
+            res.data = changeObjKey(res.data, 'handle', 'userHandle')
 
             dispatch({
                 type: SET_POST,
@@ -150,6 +150,40 @@ export const commentOnPost = (postId, commentData) => (dispatch) => {
             dispatch({
                 type: SET_ERRORS,
                 payload: err.response.data
+            })
+        })
+}
+
+export const getUserPosts = (handle) => (dispatch) => {
+    dispatch({
+        type: LOADING_POSTS
+    })
+    console.log('userpost')
+    axios.get(`/user/${handle}`)
+        .then(res => {
+            let posts = res.data.posts
+            posts.forEach(post => {
+                changeObjKey(post, 'handle', 'userHandle')
+                changeObjKey(post, 'id', 'postId')
+            })
+
+            posts = posts.map(post => {
+                var modPost = Object.assign({}, post);
+                modPost.userImg = res.data.user.imgUrl
+                return modPost;
+            })
+
+
+            dispatch({
+                type: SET_POSTS,
+                payload: posts
+            })
+        })
+        .catch(err => {
+            console.log(err)
+            dispatch({
+                type: SET_POSTS,
+                payload: []
             })
         })
 }

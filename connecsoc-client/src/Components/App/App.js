@@ -10,6 +10,7 @@ import Home from '../../Pages/Home'
 import Login from '../../Pages/Login'
 import Signup from '../../Pages/Signup'
 import AuthRoute from '../../Components/AuthRoute/Index'
+import UserPage from '../../Pages/UserPage'
 
 import { Provider } from 'react-redux'
 import store from '../../redux/store'
@@ -69,6 +70,14 @@ const App = () =>
               <AuthRoute
                 exact path='/signup'
                 component={Signup}
+              />
+              <Route
+                exact path='/users/:handle'
+                component={UserPage}
+              />
+              <Route
+                exact path='/user/:handle'
+                component={UserPage}
               />
             </div>
           </Switch>

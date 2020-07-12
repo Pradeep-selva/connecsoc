@@ -146,17 +146,19 @@ class ExpandPost extends Component {
                     fullWidth
                     maxWidth="sm"
                 >
-                    <div className="close-button">
-                        <Tooltip
-                            title="Close post"
+                    <Tooltip
+                        title="Close post"
+                    >
+                        <IconButton
+                            onClick={this.handleClose}
                         >
-                            <IconButton
-                                onClick={this.handleClose}
-                            >
-                                <FaRegWindowClose style={{ color: "#d10a0a" }} size={20} />
-                            </IconButton>
-                        </Tooltip>
-                    </div>
+                            <FaRegWindowClose
+                                style={{ color: "#d10a0a" }}
+                                size={20}
+                                className="close-button"
+                            />
+                        </IconButton>
+                    </Tooltip>
                     <DialogContent>
                         <div className="dialog-content">
                             {dialogContent}
