@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 import { Grid } from '@material-ui/core'
 
@@ -15,7 +16,7 @@ class UserPage extends Component {
 
         this.state = {
             profile: {},
-            userLoading: false
+            userLoading: false,
         }
     }
 
@@ -25,7 +26,7 @@ class UserPage extends Component {
         this.props.getUserPosts(handle);
 
         this.setState({
-            userLoading: true
+            userLoading: true,
         })
 
         axios.get(`/user/${handle}`)
@@ -81,6 +82,7 @@ class UserPage extends Component {
                         />
                     </Grid>
                 </Grid>
+                <Link to={`/users/d03`}>Click</Link>
             </div>
         )
     }

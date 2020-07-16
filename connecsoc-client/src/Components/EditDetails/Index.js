@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import {
     Button,
     Dialog,
@@ -12,150 +12,125 @@ import './Styles.css'
 import { connect } from 'react-redux'
 import { editUser } from '../../redux/actions/userActions'
 
+import { useDetailForm } from '../../utils/customHooks'
 
-class EditDetails extends Component {
-    constructor(props) {
-        super(props)
 
-        this.state = {
-            bio: '',
-            website: '',
-            location: '',
-            open: false
-        }
+const EditDetails = ({ credentials, editUser }) => {
 
-        this.mapDetailsToProps = this.mapDetailsToProps.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
-        this.handleClose = this.handleClose.bind(this)
-        this.handleOpen = this.handleOpen.bind(this)
-        this.handleChange = this.handleChange.bind(this)
-    }
+    const [open, setOpen] = useState(false)
+    const [data, handleChange, mapData] = useDetailForm({
+        bio: '',
+        website: '',
+        location: ''
+    })
 
-    mapDetailsToProps = (credentials) => {
-        this.setState({
+    const mapDetailsToProps = (credentials) => {
+        mapData({
             bio: credentials.bio ? credentials.bio : '',
             website: credentials.website ? credentials.website : '',
             location: credentials.location ? credentials.location : ''
         })
     }
 
-    handleOpen = () => {
-        this.setState({
-            open: true
-        })
-
-        this.mapDetailsToProps(this.props.credentials)
+    const handleOpen = () => {
+        setOpen(true)
+        mapDetailsToProps(credentials)
     }
 
-    handleClose = () => {
-        this.setState({
-            open: false
-        })
-    }
-
-    handleChange = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value
-        })
-    }
-
-    handleSubmit = () => {
+    const handleSubmit = () => {
         const userDetails = {
-            bio: this.state.bio,
-            website: this.state.website,
-            location: this.state.location
+            bio: data.bio,
+            website: data.website,
+            location: data.location
         }
 
-        this.props.editUser(userDetails)
-        this.handleClose()
+        editUser(userDetails)
+        setOpen(false)
     }
 
-    componentDidMount() {
-        const credentials = this.props.credentials
-        this.mapDetailsToProps(credentials)
-    }
+    useEffect(() => {
+        mapDetailsToProps(credentials)
+    }, [])
 
-    render() {
-        const {
-            bio,
-            website,
-            location,
-            open
-        } = this.state
+    const {
+        bio,
+        website,
+        location
+    } = data
 
-        return (
-            <Fragment>
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={this.handleOpen}
-                    id="button"
-                >
-                    Edit Details
+    return (
+        <Fragment>
+            <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleOpen}
+                id="button"
+            >
+                Edit Details
                 </Button>
 
-                <Dialog
-                    maxWidth="sm"
-                    open={open}
-                    onClose={this.handleClose}
-                    fullWidth
-                >
-                    <DialogTitle>Edit your details</DialogTitle>
+            <Dialog
+                maxWidth="sm"
+                open={open}
+                onClose={() => setOpen(false)}
+                fullWidth
+            >
+                <DialogTitle>Edit your details</DialogTitle>
 
-                    <DialogContent>
-                        <form>
-                            <TextField
-                                type="text"
-                                value={bio}
-                                name="bio"
-                                label="Bio"
-                                placeholder="Tell something interesting about you"
-                                multiline
-                                rows="3"
-                                fullWidth
-                                onChange={this.handleChange}
-                            />
-                            <TextField
-                                type="text"
-                                value={location}
-                                name="location"
-                                label="Location"
-                                placeholder="Where do you live?"
-                                fullWidth
-                                onChange={this.handleChange}
-                            />
-                            <TextField
-                                type="text"
-                                value={website}
-                                name="website"
-                                label="Website"
-                                placeholder="What's your website?"
-                                fullWidth
-                                onChange={this.handleChange}
-                            />
-                        </form>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button
-                            color="secondary"
-                            onClick={this.handleClose}
-                        >
-                            Cancel
+                <DialogContent>
+                    <form>
+                        <TextField
+                            type="text"
+                            value={bio}
+                            name="bio"
+                            label="Bio"
+                            placeholder="Tell something interesting about you"
+                            multiline
+                            rows="3"
+                            fullWidth
+                            onChange={handleChange}
+                        />
+                        <TextField
+                            type="text"
+                            value={location}
+                            name="location"
+                            label="Location"
+                            placeholder="Where do you live?"
+                            fullWidth
+                            onChange={handleChange}
+                        />
+                        <TextField
+                            type="text"
+                            value={website}
+                            name="website"
+                            label="Website"
+                            placeholder="What's your website?"
+                            fullWidth
+                            onChange={handleChange}
+                        />
+                    </form>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        color="secondary"
+                        onClick={() => setOpen(false)}
+                    >
+                        Cancel
                         </Button>
 
-                        <Button
-                            color="primary"
-                            onClick={this.handleSubmit}
-                        >
-                            Save
+                    <Button
+                        color="primary"
+                        onClick={handleSubmit}
+                    >
+                        Save
                         </Button>
-                    </DialogActions>
-                </Dialog>
-            </Fragment>
-        )
-    }
-
+                </DialogActions>
+            </Dialog>
+        </Fragment>
+    )
 }
+
+
 
 const mapStateToProps = state => ({
     credentials: state.user.credentials

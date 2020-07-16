@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
 import './Styles.css'
@@ -20,155 +20,136 @@ import { getPost } from '../../redux/actions/dataActions'
 import LikeButton from '../LikeButton/Index'
 import Comments from '../Comments/Index'
 
-class ExpandPost extends Component {
-    constructor(props) {
-        super(props)
+const ExpandPost = ({
+    post: {
+        id,
+        createdAt,
+        handle,
+        likeCount,
+        body,
+        commentCount,
+        userImg,
+        comments
+    },
+    loading,
+    getPost,
+    postId
+}) => {
 
-        this.state = {
-            open: false
-        }
+    const [open, setOpen] = useState(false)
 
-        this.handleOpen = this.handleOpen.bind(this)
-        this.handleClose = this.handleClose.bind(this)
+    const handleOpen = () => {
+        setOpen(true)
+        getPost(postId)
     }
 
-    handleOpen() {
-        this.setState({
-            open: true
-        })
-
-        this.props.getPost(this.props.postId)
-    }
-
-    handleClose() {
-        this.setState({
-            open: false
-        })
-    }
-
-    render() {
-        const { open } = this.state
-        const {
-            post: {
-                id,
-                createdAt,
-                handle,
-                likeCount,
-                body,
-                commentCount,
-                userImg,
-                comments
-            },
-            loading
-        } = this.props
-
-        let dialogContent = loading ? (
+    let dialogContent = loading ? (
+        <Fragment>
+            <CircularProgress size={150} color="primary" id="progress" />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+        </Fragment>
+    ) : (
             <Fragment>
-                <CircularProgress size={150} color="primary" id="progress" />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-            </Fragment>
-        ) : (
-                <Fragment>
-                    <Grid container spacing={16}>
-                        <Grid item sm={5} xs={12}>
-                            <img src={userImg} alt="profile picture" id="profile" />
-                        </Grid>
-
-                        <Grid item sm={7} xs={12}>
-                            <Typography
-                                variant="h5"
-                                component={Link}
-                                to={`/user/${handle}`}
-                                color="primary"
-                            >
-                                @{handle}
-                            </Typography>
-                            <Typography
-                                variant="body2"
-                                color="textSecondary"
-                            >
-                                {dayjs(createdAt).format('h:mm a, MMM DD YYYY')}
-                            </Typography>
-                            <hr />
-                            {body}
-                            <br />
-                            <br />
-                            <LikeButton id={id} />
-                            <span>{likeCount} likes</span>
-                            <Tooltip title="Post comment">
-                                <IconButton>
-                                    <FaCommentDots
-                                        size={20}
-                                        style={{ color: "3ca4b0" }}
-                                    />
-                                </IconButton>
-                            </Tooltip>
-                            <span>
-                                {commentCount} comments
-                    </span>
-                        </Grid>
+                <Grid container spacing={16}>
+                    <Grid item sm={5} xs={12}>
+                        <img src={userImg} alt="profile picture" id="profile" />
                     </Grid>
-                    <br />
-                    <Typography
-                        variant="h6"
-                        color="primary">
-                        Comments
+
+                    <Grid item sm={7} xs={12}>
+                        <Typography
+                            variant="h5"
+                            component={Link}
+                            to={`/user/${handle}`}
+                            color="primary"
+                        >
+                            @{handle}
+                        </Typography>
+                        <Typography
+                            variant="body2"
+                            color="textSecondary"
+                        >
+                            {dayjs(createdAt).format('h:mm a, MMM DD YYYY')}
+                        </Typography>
+                        <hr />
+                        {body}
+                        <br />
+                        <br />
+                        <LikeButton id={id} />
+                        <span>{likeCount} likes</span>
+                        <Tooltip title="Post comment">
+                            <IconButton>
+                                <FaCommentDots
+                                    size={20}
+                                    style={{ color: "3ca4b0" }}
+                                />
+                            </IconButton>
+                        </Tooltip>
+                        <span>
+                            {commentCount} comments
+                    </span>
+                    </Grid>
+                </Grid>
+                <br />
+                <Typography
+                    variant="h6"
+                    color="primary">
+                    Comments
                     </Typography>
-                    <Comments comments={comments} postId={id} />
-                </Fragment>
-            )
-
-        return (
-            <Fragment>
-                <div className="expand-button">
-                    <Tooltip
-                        title="Expland post"
-                    >
-                        <IconButton
-                            onClick={this.handleOpen}
-                        >
-                            <FaExpandAlt style={{ color: "#3ca4b0" }} size={20} />
-                        </IconButton>
-                    </Tooltip>
-                </div>
-
-                <Dialog
-                    open={open}
-                    onClose={this.handleClose}
-                    fullWidth
-                    maxWidth="sm"
-                >
-                    <Tooltip
-                        title="Close post"
-                    >
-                        <IconButton
-                            onClick={this.handleClose}
-                        >
-                            <FaRegWindowClose
-                                style={{ color: "#d10a0a" }}
-                                size={20}
-                                className="close-button"
-                            />
-                        </IconButton>
-                    </Tooltip>
-                    <DialogContent>
-                        <div className="dialog-content">
-                            {dialogContent}
-                        </div>
-                    </DialogContent>
-                </Dialog>
+                <Comments comments={comments} postId={id} />
             </Fragment>
         )
-    }
+
+    return (
+        <Fragment>
+            <div className="expand-button">
+                <Tooltip
+                    title="Expland post"
+                >
+                    <IconButton
+                        onClick={handleOpen}
+                    >
+                        <FaExpandAlt style={{ color: "#3ca4b0" }} size={20} />
+                    </IconButton>
+                </Tooltip>
+            </div>
+
+            <Dialog
+                open={open}
+                onClose={() => setOpen(false)}
+                fullWidth
+                maxWidth="sm"
+            >
+                <Tooltip
+                    title="Close post"
+                >
+                    <IconButton
+                        onClick={() => setOpen(false)}
+                    >
+                        <FaRegWindowClose
+                            style={{ color: "#d10a0a" }}
+                            size={20}
+                            className="close-button"
+                        />
+                    </IconButton>
+                </Tooltip>
+                <DialogContent>
+                    <div className="dialog-content">
+                        {dialogContent}
+                    </div>
+                </DialogContent>
+            </Dialog>
+        </Fragment>
+    )
 }
+
 
 const mapStateToProps = state => ({
     loading: state.UI.loading,

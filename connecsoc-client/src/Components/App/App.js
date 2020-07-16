@@ -9,7 +9,7 @@ import Navbar from '../Navbar/Index'
 import Home from '../../Pages/Home'
 import Login from '../../Pages/Login'
 import Signup from '../../Pages/Signup'
-import AuthRoute from '../../Components/AuthRoute/Index'
+import AuthRoute from '../../utils/AuthRoute'
 import UserPage from '../../Pages/UserPage'
 
 import { Provider } from 'react-redux'
@@ -77,6 +77,10 @@ const App = () =>
               />
               <Route
                 exact path='/user/:handle'
+                component={UserPage}
+              />
+              <Route
+                exact path='/users/:handle/posts/:postId'
                 component={UserPage}
               />
             </div>

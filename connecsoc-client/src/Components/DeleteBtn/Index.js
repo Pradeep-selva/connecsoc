@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import './Styles.css'
 
 import {
@@ -14,82 +14,56 @@ import { FaRegTrashAlt } from 'react-icons/fa'
 import { connect } from 'react-redux'
 import { deletePost } from '../../redux/actions/dataActions'
 
-class DeleteBtn extends Component {
-    constructor(props) {
-        super(props);
+const DeleteBtn = ({ deletePost, id }) => {
+    const [open, setOpen] = useState(false)
 
-        this.state = {
-            open: false
-        }
-
-        this.handleOpen = this.handleOpen.bind(this)
-        this.handleClose = this.handleClose.bind(this)
-        this.handleDelete = this.handleDelete.bind(this)
-    }
-
-    handleOpen() {
-        this.setState({
-            open: true
-        })
-    }
-
-    handleClose() {
-        this.setState({
-            open: false
-        })
-    }
-
-    handleDelete() {
+    const handleDelete = () => {
         console.log("initiating delete")
-        this.props.deletePost(this.props.id)
+        deletePost(id)
 
-        this.setState({
-            open: false
-        })
+        setOpen(true)
     }
 
-    render() {
-        return (
-            <Fragment>
-                <Tooltip
-                    title="Delete Post"
+    return (
+        <Fragment>
+            <Tooltip
+                title="Delete Post"
+            >
+                <IconButton
+                    onClick={() => setOpen(true)}
+                    id="delete"
                 >
-                    <IconButton
-                        onClick={this.handleOpen}
-                        id="delete"
-                    >
-                        <FaRegTrashAlt style={{ color: '#d10a0a' }} />
-                    </IconButton>
-                </Tooltip>
+                    <FaRegTrashAlt style={{ color: '#d10a0a' }} />
+                </IconButton>
+            </Tooltip>
 
-                <Dialog
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                    fullWidth
-                    maxWidth="sm"
-                >
-                    <DialogTitle>
-                        Are you sure you want to delete this post? This action is irreversible.
+            <Dialog
+                open={open}
+                onClose={() => setOpen(false)}
+                fullWidth
+                maxWidth="sm"
+            >
+                <DialogTitle>
+                    Are you sure you want to delete this post? This action is irreversible.
                     </DialogTitle>
 
-                    <DialogActions>
-                        <Button
-                            onClick={this.handleClose}
-                            style={{ color: '#d10a0a' }}
-                        >
-                            Cancel
+                <DialogActions>
+                    <Button
+                        onClick={() => setOpen(false)}
+                        style={{ color: '#d10a0a' }}
+                    >
+                        Cancel
                         </Button>
-                        <Button
-                            onClick={this.handleDelete}
-                            color="primary"
-                        >
-                            Confirm
+                    <Button
+                        onClick={handleDelete}
+                        color="primary"
+                    >
+                        Confirm
                         </Button>
-                    </DialogActions>
-                </Dialog>
-            </Fragment>
-        )
-    }
+                </DialogActions>
+            </Dialog>
+        </Fragment>
+    )
 }
 
 export default connect(null, { deletePost })(DeleteBtn);
