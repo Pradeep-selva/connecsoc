@@ -19,3 +19,17 @@ export const useDetailForm = (formData) => {
         }
     ]
 }
+
+export const useUserState = (userData) => {
+    const [data, setData] = useState(userData)
+
+    return [
+        data,
+        newData => {
+            setData({
+                ...data,
+                ...newData
+            })
+        }
+    ]
+}

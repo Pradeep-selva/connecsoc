@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 
 import {
     Dialog,
@@ -10,77 +10,51 @@ import {
 import { connect } from 'react-redux'
 import { logoutUser } from '../../redux/actions/userActions'
 
-class Logout extends Component {
-    constructor(props) {
-        super(props);
+const Logout = ({ logoutUser }) => {
+    const [open, setOpen] = useState(false)
 
-        this.state = {
-            open: false
-        }
-
-        this.handleOpen = this.handleOpen.bind(this)
-        this.handleClose = this.handleClose.bind(this)
-        this.handleLogout = this.handleLogout.bind(this)
+    const handleLogout = () => {
+        logoutUser()
+        setOpen(false)
     }
 
-    handleOpen() {
-        this.setState({
-            open: true
-        })
-    }
 
-    handleClose() {
-        this.setState({
-            open: false
-        })
-    }
+    return (
+        <Fragment>
+            <Button
+                color="inherit"
+                onClick={() => setOpen(true)}
+            >
+                Logout
+            </Button>
 
-    handleLogout() {
-        this.props.logoutUser()
-
-        this.setState({
-            open: false
-        })
-    }
-
-    render() {
-        return (
-            <Fragment>
-                <Button
-                    color="inherit"
-                    onClick={this.handleOpen}
-                >
-                    Logout
-                        </Button>
-
-                <Dialog
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                    fullWidth
-                    maxWidth="sm"
-                >
-                    <DialogTitle>
-                        Are you sure you want to logout?
+            <Dialog
+                open={open}
+                onClose={() => setOpen(false)}
+                fullWidth
+                maxWidth="sm"
+            >
+                <DialogTitle>
+                    Are you sure you want to logout?
                     </DialogTitle>
 
-                    <DialogActions>
-                        <Button
-                            onClick={this.handleClose}
-                            color="secondary"
-                        >
-                            Cancel
+                <DialogActions>
+                    <Button
+                        onClick={() => setOpen(false)}
+                        color="secondary"
+                    >
+                        Cancel
                         </Button>
-                        <Button
-                            onClick={this.handleLogout}
-                            color="primary"
-                        >
-                            Logout
+                    <Button
+                        onClick={handleLogout}
+                        color="primary"
+                    >
+                        Logout
                         </Button>
-                    </DialogActions>
-                </Dialog>
-            </Fragment>
-        )
-    }
+                </DialogActions>
+            </Dialog>
+        </Fragment>
+    )
 }
 
 export default connect(null, { logoutUser })(Logout);

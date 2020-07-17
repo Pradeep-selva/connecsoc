@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
 
 import { Grid } from '@material-ui/core'
 
@@ -9,84 +8,78 @@ import { getUserPosts } from '../redux/actions/dataActions'
 
 import Post from '../Components/Post/Index'
 import UserStaticProfile from '../Components/UserStaticProfile/Index'
+import { useUserState } from '../utils/customHooks'
 
-class UserPage extends Component {
-    constructor(props) {
-        super(props);
+const UserPage = (props) => {
+    const [userState, setUserState] = useUserState({
+        profile: {},
+        userLoading: false
+    })
 
-        this.state = {
-            profile: {},
-            userLoading: false,
-        }
-    }
+    useEffect(() => {
+        const handle = props.match.params.handle;
+        props.getUserPosts(handle);
 
-    componentDidMount() {
-        console.log('user page mounted')
-        const handle = this.props.match.params.handle;
-        this.props.getUserPosts(handle);
-
-        this.setState({
+        setUserState({
             userLoading: true,
         })
 
         axios.get(`/user/${handle}`)
             .then(res => {
-                this.setState({
+                setUserState({
                     profile: res.data.user,
                     userLoading: false
                 })
             })
             .catch(err => {
                 console.log(err)
-                this.setState({
+                setUserState({
                     userLoading: false
                 })
             })
-    }
+    }, [])
 
-    render() {
-        const {
-            profile,
-            userLoading
-        } = this.state
+    const {
+        profile,
+        userLoading
+    } = userState
 
-        const {
-            posts,
-            postLoading
-        } = this.props
+    const {
+        posts,
+        postLoading
+    } = props
 
-        let c = 0;
+    let c = 0;
 
-        let userPosts = !postLoading ? (
-            posts.map((post) => (
-                <div>
-                    <Post key={post.id} post={post} index={c++} />
-                </div>
-            ))
-
-        ) :
-            (
-                <p>Loading...</p>
-            )
-
-        return (
+    let userPosts = !postLoading ? (
+        posts.map((post) => (
             <div>
-                <Grid container spacing={30}>
-                    <Grid item sm={8} xs={12}>
-                        {userPosts}
-                    </Grid>
-                    <Grid item sm={4} xs={12}>
-                        <UserStaticProfile
-                            profile={profile}
-                            loading={userLoading}
-                        />
-                    </Grid>
-                </Grid>
-                <Link to={`/users/d03`}>Click</Link>
+                <Post key={post.id} post={post} index={c++} />
             </div>
+        ))
+
+    ) :
+        (
+            <p>Loading...</p>
         )
-    }
+
+    return (
+        <div>
+            <Grid container spacing={30}>
+                <Grid item sm={8} xs={12}>
+                    {userPosts}
+                </Grid>
+                <Grid item sm={4} xs={12}>
+                    <UserStaticProfile
+                        profile={profile}
+                        loading={userLoading}
+                    />
+                </Grid>
+            </Grid>
+        </div>
+    )
 }
+
 
 const mapStateToProps = state => ({
     posts: state.data.posts,
