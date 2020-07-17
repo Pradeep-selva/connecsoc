@@ -33,3 +33,20 @@ export const useUserState = (userData) => {
         }
     ]
 }
+
+export const usePaths = () => {
+    const [paths, setPaths] = useState({
+        oldPath: '',
+        newPath: ''
+    })
+
+    return [
+        paths,
+        (oldPath, newPath) => {
+            setPaths({
+                oldPath,
+                newPath
+            })
+        }
+    ]
+}

@@ -51,14 +51,36 @@ const UserPage = (props) => {
 
     let c = 0;
 
-    let userPosts = !postLoading ? (
-        posts.map((post) => (
+    let userPosts = !postLoading ? (posts !== null ? (
+        !props.match.params.postId ? (posts.map((post) => (
             <div>
-                <Post key={post.id} post={post} index={c++} />
+                <Post
+                    key={post.id}
+                    post={post}
+                    index={c++}
+                />
             </div>
-        ))
-
-    ) :
+        ))) : (posts.map(post => {
+            if (post.id !== props.match.params.postId)
+                return (
+                    <Post
+                        key={post.id}
+                        post={post}
+                        index={c++}
+                    />
+                )
+            else
+                return (
+                    <Post
+                        key={post.id}
+                        post={post}
+                        index={c++}
+                        openPost={true}
+                    />
+                )
+        }))) : (
+            <p>No posts yet :)</p>
+        )) :
         (
             <p>Loading...</p>
         )

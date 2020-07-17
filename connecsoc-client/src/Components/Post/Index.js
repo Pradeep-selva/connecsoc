@@ -29,7 +29,8 @@ const Post = (props) => {
             userImg
         },
         userHandle,
-        index
+        index,
+        openPost
     } = props
 
     const { likeCount, commentCount } = props.posts[index]
@@ -82,7 +83,11 @@ const Post = (props) => {
                     <span>
                         {commentCount} comments
                     </span>
-                    <ExpandPost postId={id} />
+                    <ExpandPost
+                        postId={id}
+                        openPost={openPost}
+                        userHandle={handle}
+                    />
                 </CardContent>
             </Card>
         </div>

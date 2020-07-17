@@ -166,7 +166,7 @@ export const getUserPosts = (handle) => (dispatch) => {
                 changeObjKey(post, 'handle', 'userHandle')
                 changeObjKey(post, 'id', 'postId')
             })
-
+            console.log(posts)
             posts = posts.map(post => {
                 var modPost = Object.assign({}, post);
                 modPost.userImg = res.data.user.imgUrl
@@ -181,9 +181,5 @@ export const getUserPosts = (handle) => (dispatch) => {
         })
         .catch(err => {
             console.log(err)
-            dispatch({
-                type: SET_POSTS,
-                payload: []
-            })
         })
 }

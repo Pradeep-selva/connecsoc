@@ -17,7 +17,6 @@ const Comments = ({ comments, postId }) =>
                     userHandle,
                     userImg
                 } = comment
-                console.log(comments.length)
 
                 return (
                     <Fragment key={createdAt}>

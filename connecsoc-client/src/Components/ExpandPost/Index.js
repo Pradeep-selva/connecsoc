@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
 import './Styles.css'
@@ -19,6 +19,7 @@ import { getPost } from '../../redux/actions/dataActions'
 
 import LikeButton from '../LikeButton/Index'
 import Comments from '../Comments/Index'
+import { usePaths } from '../../utils/customHooks'
 
 const ExpandPost = ({
     post: {
@@ -33,15 +34,38 @@ const ExpandPost = ({
     },
     loading,
     getPost,
-    postId
+    postId,
+    openPost,
+    userHandle
 }) => {
-
     const [open, setOpen] = useState(false)
+    const [paths, setPaths] = usePaths()
 
     const handleOpen = () => {
+        let oldPath = window.location.pathname
+        const newPath = `/users/${userHandle}/posts/${postId}`
+
+        if (oldPath === newPath)
+            oldPath = `users/${userHandle}`
+
+        window.history.pushState(null, null, newPath)
+
+        setPaths(oldPath, newPath)
         setOpen(true)
         getPost(postId)
     }
+
+    const handleClose = () => {
+        window.history.pushState(null, null, paths.oldPath)
+        setOpen(false)
+    }
+
+
+    useEffect(() => {
+        if (openPost) {
+            handleOpen()
+        }
+    }, [])
 
     let dialogContent = loading ? (
         <Fragment>
@@ -123,7 +147,7 @@ const ExpandPost = ({
 
             <Dialog
                 open={open}
-                onClose={() => setOpen(false)}
+                onClose={handleClose}
                 fullWidth
                 maxWidth="sm"
             >
@@ -131,7 +155,7 @@ const ExpandPost = ({
                     title="Close post"
                 >
                     <IconButton
-                        onClick={() => setOpen(false)}
+                        onClick={handleClose}
                     >
                         <FaRegWindowClose
                             style={{ color: "#d10a0a" }}
