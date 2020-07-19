@@ -6,6 +6,7 @@ import { Paper, Typography, Button, IconButton, Tooltip } from '@material-ui/cor
 import MuiLink from '@material-ui/core/Link'
 import dayjs from 'dayjs'
 import EditDetails from '../EditDetails/Index'
+import UserSkeleton from '../../utils/skeletons/UserSkeleton'
 import './Styles.css'
 
 import { connect } from 'react-redux'
@@ -42,7 +43,7 @@ const Profile = (props) => {
     } = props
 
     if (loading) {
-        return <h2>Loading...</h2>
+        return <UserSkeleton />
     }
     else {
         if (authenticated) {

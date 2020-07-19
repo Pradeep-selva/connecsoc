@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Grid } from '@material-ui/core'
 import Post from '../Components/Post/Index'
 import Profile from '../Components/Profile/Index'
+import PostsSkeleton from '../utils/skeletons/PostsSkeleton'
 
 import { connect } from 'react-redux'
 import { getPosts } from '../redux/actions/dataActions'
@@ -23,7 +24,7 @@ const Home = ({ getPosts, posts, loading }) => {
 
     ) :
         (
-            <p>Loading...</p>
+            <PostsSkeleton />
         )
 
     return (

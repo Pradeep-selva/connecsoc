@@ -1,0 +1,43 @@
+.handle{
+    width: 80px;
+    background:#52a178;
+    height: 18px;
+    margin-bottom: 5px;
+}
+
+.date{
+    width: 100px;
+    background: rgba(0,0,0,0.3);
+    height:10px;
+    margin-bottom: 10px;
+}
+
+.fullLine{
+    width: 22em;
+    background: rgba(0,0,0,0.5);
+    height:15px;
+    margin-bottom: 2px;
+}
+
+.halfLine{
+    width: 10em;
+    background: rgba(0,0,0,0.5);
+    height:15px;
+    margin-bottom: 2px;
+}
+
+.profile-handle{
+    width: 120px;
+    background:#52a178;
+    height: 25px;
+    margin-bottom: 5px;
+    margin-left: 30%;
+}
+
+.bio{
+    width: 150px;
+    background: rgba(0,0,0,0.3);
+    height:10px;
+    margin-bottom: 10px;
+    margin-left: 25%;
+}

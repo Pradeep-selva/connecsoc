@@ -9,6 +9,7 @@ import { getUserPosts } from '../redux/actions/dataActions'
 import Post from '../Components/Post/Index'
 import UserStaticProfile from '../Components/UserStaticProfile/Index'
 import { useUserState } from '../utils/customHooks'
+import PostsSkeleton from '../utils/skeletons/PostsSkeleton'
 
 const UserPage = (props) => {
     const [userState, setUserState] = useUserState({
@@ -82,7 +83,7 @@ const UserPage = (props) => {
             <p>No posts yet :)</p>
         )) :
         (
-            <p>Loading...</p>
+            <PostsSkeleton />
         )
 
     return (

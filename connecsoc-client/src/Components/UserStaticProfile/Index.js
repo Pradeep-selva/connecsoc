@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
+import UserSkeleton from '../../utils/skeletons/UserSkeleton'
 import './Styles.css'
 
 import { FaCalendarAlt, FaSearchLocation, FaGlobe } from 'react-icons/fa'
@@ -22,7 +23,7 @@ const UserStaticProfile = (props) => {
     } = props
 
     if (loading) {
-        return <h2>Loading...</h2>
+        return <UserSkeleton />
     }
     else {
         return (
