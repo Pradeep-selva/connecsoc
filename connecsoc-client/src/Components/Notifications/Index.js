@@ -5,7 +5,6 @@ import { FaCommentDots, FaStar } from 'react-icons/fa'
 import './Styles.css'
 
 import {
-    Button,
     Typography,
     IconButton,
     Tooltip,
@@ -68,7 +67,7 @@ const Notifications = ({ notifications, markNotificationsRead }) => {
 
     const notificationMarkup =
         notifications && notifications.length > 0 ? (
-            notifications.map(not => {
+            notifications.map((not, index) => {
                 const verb = not.type === 'like' ? 'liked' : 'commented on';
                 const time = dayjs(not.createdAt).fromNow();
                 const iconColor = not.read ? '#52a178' : '#c23802';
@@ -85,7 +84,7 @@ const Notifications = ({ notifications, markNotificationsRead }) => {
                     )
 
                 return (
-                    <MenuItem onClick={handleClose}>
+                    <MenuItem onClick={handleClose} key={index}>
                         {icon}
                         <Typography
                             component={Link}

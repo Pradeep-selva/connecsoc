@@ -9,7 +9,7 @@ import { Paper } from '@material-ui/core'
 const UserSkeleton = () =>
     <Paper>
         <div className="image-wrapper">
-            <img src={noImg} alt="profile image" className="image" />
+            <img src={noImg} alt="profile" className="image" />
         </div>
         <hr />
         <div className="profile">

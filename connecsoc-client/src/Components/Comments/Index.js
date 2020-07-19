@@ -7,7 +7,7 @@ import './Styles.css'
 import { Typography, Grid } from '@material-ui/core'
 
 const Comments = ({ comments, postId }) =>
-    <Grid container spacing={12} id="comment-grid">
+    <Grid container id="comment-grid">
         <AddComment postId={postId} />
         {
             comments.map(comment => {
@@ -26,7 +26,7 @@ const Comments = ({ comments, postId }) =>
                                     <Grid item sm={3}>
                                         <img
                                             src={userImg}
-                                            alt="profile picture"
+                                            alt="profile"
                                             id="comment-profile"
                                         />
                                     </Grid>

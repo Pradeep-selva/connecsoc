@@ -18,7 +18,6 @@ const DeleteBtn = ({ deletePost, id }) => {
     const [open, setOpen] = useState(false)
 
     const handleDelete = () => {
-        console.log("initiating delete")
         deletePost(id)
 
         setOpen(true)

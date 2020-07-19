@@ -17,8 +17,8 @@ const Home = ({ getPosts, posts, loading }) => {
 
     let recentPosts = !loading ? (
         posts.map((post) => (
-            <div>
-                <Post key={post.id} post={post} index={c++} />
+            <div key={post.id}>
+                <Post post={post} index={c++} />
             </div>
         ))
 
@@ -29,7 +29,7 @@ const Home = ({ getPosts, posts, loading }) => {
 
     return (
         <div>
-            <Grid container spacing={30}>
+            <Grid container>
                 <Grid item sm={8} xs={12}>
                     {recentPosts}
                 </Grid>

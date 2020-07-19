@@ -16,7 +16,6 @@ export const loginUser = (userData, history) => (dispatch) => {
 
     axios.post('/login', userData)
         .then(res => {
-            console.log(res.data)
             setToken(res.data.token)
             dispatch(getUser())
             dispatch({
@@ -40,7 +39,6 @@ export const signupUser = (userData, history) => (dispatch) => {
 
     axios.post('/signup', userData)
         .then(res => {
-            console.log(res.data)
             setToken(res.data.token)
             dispatch(getUser())
             dispatch({

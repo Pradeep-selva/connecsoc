@@ -45,11 +45,11 @@ export class Signup extends Component {
         })
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.UI.errors) {
-            this.setState({
-                errors: nextProps.UI.errors
-            })
+    static getDerivedStateFromProps(props, state) {
+        if (props.UI.errors) {
+            return {
+                errors: props.UI.errors
+            }
         }
     }
 

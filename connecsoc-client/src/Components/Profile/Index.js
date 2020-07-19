@@ -50,7 +50,7 @@ const Profile = (props) => {
             return (
                 <Paper>
                     <div className="image-wrapper">
-                        <img src={imgUrl} alt="profile image" className="image" />
+                        <img src={imgUrl} alt="profile" className="image" />
                     </div>
                     <input
                         type="file"

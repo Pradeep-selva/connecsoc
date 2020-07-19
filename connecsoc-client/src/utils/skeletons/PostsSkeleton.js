@@ -13,7 +13,7 @@ const PostsSkeleton = () => {
             <CardMedia
                 component="img"
                 image={noImg}
-                title="Profile picture" />
+                title="Profile" />
             <CardContent>
                 Loading
                 <div className="handle" />

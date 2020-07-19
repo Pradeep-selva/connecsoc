@@ -102,7 +102,6 @@ export const deletePost = (postId) => (dispatch) => {
 
     axios.delete(`/post/${postId}`)
         .then(res => {
-            console.log(res)
             dispatch({
                 type: DELETE_POST,
                 payload: postId
@@ -158,7 +157,7 @@ export const getUserPosts = (handle) => (dispatch) => {
     dispatch({
         type: LOADING_POSTS
     })
-    console.log('userpost')
+
     axios.get(`/user/${handle}`)
         .then(res => {
             let posts = res.data.posts
@@ -166,7 +165,7 @@ export const getUserPosts = (handle) => (dispatch) => {
                 changeObjKey(post, 'handle', 'userHandle')
                 changeObjKey(post, 'id', 'postId')
             })
-            console.log(posts)
+
             posts = posts.map(post => {
                 var modPost = Object.assign({}, post);
                 modPost.userImg = res.data.user.imgUrl

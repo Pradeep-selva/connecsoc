@@ -82,9 +82,9 @@ const ExpandPost = ({
         </Fragment>
     ) : (
             <Fragment>
-                <Grid container spacing={16}>
+                <Grid container>
                     <Grid item sm={5} xs={12}>
-                        <img src={userImg} alt="profile picture" id="profile" />
+                        <img src={userImg} alt="profile" id="profile" />
                     </Grid>
 
                     <Grid item sm={7} xs={12}>

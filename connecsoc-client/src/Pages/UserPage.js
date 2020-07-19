@@ -53,10 +53,9 @@ const UserPage = (props) => {
     let c = 0;
 
     let userPosts = !postLoading ? (posts !== null ? (
-        !props.match.params.postId ? (posts.map((post) => (
-            <div>
+        !props.match.params.postId ? (posts.map((post, index) => (
+            <div key={post.id}>
                 <Post
-                    key={post.id}
                     post={post}
                     index={c++}
                 />
@@ -88,7 +87,7 @@ const UserPage = (props) => {
 
     return (
         <div>
-            <Grid container spacing={30}>
+            <Grid container>
                 <Grid item sm={8} xs={12}>
                     {userPosts}
                 </Grid>

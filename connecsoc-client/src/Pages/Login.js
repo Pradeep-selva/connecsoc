@@ -25,7 +25,6 @@ export class Login extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault()
-        console.log("submitted login form")
 
         const userData = {
             email: this.state.email,
@@ -42,11 +41,11 @@ export class Login extends Component {
         })
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.UI.errors) {
-            this.setState({
-                errors: nextProps.UI.errors
-            })
+    static getDerivedStateFromProps(props, state) {
+        if (props.UI.errors) {
+            return {
+                errors: props.UI.errors
+            }
         }
     }
 

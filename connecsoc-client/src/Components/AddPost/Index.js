@@ -41,7 +41,8 @@ class AddPost extends Component {
     handleClose = () => {
         this.setState({
             open: false,
-            errors: {}
+            errors: {},
+            body: ''
         })
     }
 
@@ -67,14 +68,6 @@ class AddPost extends Component {
             this.handleClose()
         }
     }
-
-    // componentWillReceiveProps(nextProps) {
-    //     if (nextProps.UI.errors !== this.state.errors) {
-    //         this.setState({
-    //             errors: nextProps.UI.errors
-    //         })
-    //     }
-    // }
 
     render() {
         const { open, errors } = this.state
