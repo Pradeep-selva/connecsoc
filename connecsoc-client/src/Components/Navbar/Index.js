@@ -11,11 +11,11 @@ import { NavLink } from 'react-router-dom'
 import {
     FaConnectdevelop,
     FaHome,
-    FaBell
 } from 'react-icons/fa'
 import './Styles.css'
 import Logout from '../Logout/Index'
 import AddPost from '../AddPost/Index'
+import Notifications from '../Notifications/Index'
 
 import { connect } from 'react-redux'
 
@@ -52,15 +52,7 @@ const Navbar = (props) =>
                                         <FaHome />
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip
-                                    title="Notifications"
-                                >
-                                    <IconButton
-                                        color="inherit"
-                                    >
-                                        <FaBell />
-                                    </IconButton>
-                                </Tooltip>
+                                <Notifications />
                             </div>
                             <Logout />
                         </Fragment>
