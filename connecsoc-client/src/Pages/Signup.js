@@ -27,7 +27,6 @@ export class Signup extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault()
-        console.log("submitted login form")
 
         const userData = {
             email: this.state.email,
