@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { loginUser } from '../redux/actions/userActions'
 
 
-export class Login extends Component {
+class Login extends Component {
 
     constructor(props) {
         super(props)

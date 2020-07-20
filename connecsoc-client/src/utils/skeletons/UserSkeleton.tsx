@@ -6,7 +6,7 @@ import { FaCalendarAlt, FaSearchLocation, FaGlobe } from 'react-icons/fa'
 import { Paper } from '@material-ui/core'
 
 
-const UserSkeleton = () =>
+const UserSkeleton: React.FC = () =>
     <Paper>
         <div className="image-wrapper">
             <img src={noImg} alt="profile" className="image" />

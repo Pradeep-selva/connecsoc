@@ -7,8 +7,8 @@ import {
 import noImg from './noImg.jpg'
 import './Styles.css'
 
-const PostsSkeleton = () => {
-    const content = Array.from({ length: 5 }).map((item, index) => (
+const PostsSkeleton: React.FC = () => {
+    const content = Array.from({ length: 5 }).map((item: null | undefined | unknown, index: number) => (
         <Card key={index}>
             <CardMedia
                 component="img"

@@ -13,18 +13,22 @@ import {
     STOP_LOADING,
     ADD_COMMENT
 } from '../types'
+import { Dispatch } from 'redux'
 
 
-const changeObjKey = (data, newKey, oldKey) => {
-    Object.defineProperty(data, newKey,
-        Object.getOwnPropertyDescriptor(data, oldKey))
+const changeObjKey = (data: any, newKey: string, oldKey: string) => {
+    const oldValue = Object.getOwnPropertyDescriptor(data, oldKey);
+    if (!oldValue) {
+        return;
+    }
+    Object.defineProperty(data, newKey, oldValue)
     delete data[oldKey]
 
     return data
 }
 
 
-export const getPosts = () => (dispatch) => {
+export const getPosts = () => (dispatch: Dispatch) => {
     dispatch({
         type: LOADING_POSTS
     })
@@ -44,7 +48,7 @@ export const getPosts = () => (dispatch) => {
         })
 }
 
-export const likePost = (postId) => (dispatch) => {
+export const likePost = (postId: string) => (dispatch: Dispatch) => {
     axios.get(`/post/${postId}/like`)
         .then(res => {
             res.data = changeObjKey(res.data, 'handle', 'userHandle')
@@ -57,7 +61,7 @@ export const likePost = (postId) => (dispatch) => {
         .catch(err => console.log(err))
 }
 
-export const unlikePost = (postId) => (dispatch) => {
+export const unlikePost = (postId: string) => (dispatch: Dispatch) => {
     axios.get(`/post/${postId}/unlike`)
         .then(res => {
             res.data = changeObjKey(res.data, 'handle', 'userHandle')
@@ -70,7 +74,7 @@ export const unlikePost = (postId) => (dispatch) => {
         .catch(err => console.log(err))
 }
 
-export const addPost = (postData) => (dispatch) => {
+export const addPost = (postData: { body: string }) => (dispatch: Dispatch) => {
     dispatch({
         type: LOADING_UI
     })
@@ -98,7 +102,7 @@ export const addPost = (postData) => (dispatch) => {
         })
 }
 
-export const deletePost = (postId) => (dispatch) => {
+export const deletePost = (postId: string) => (dispatch: Dispatch) => {
 
     axios.delete(`/post/${postId}`)
         .then(res => {
@@ -110,7 +114,7 @@ export const deletePost = (postId) => (dispatch) => {
         .catch(err => console.log(err))
 }
 
-export const getPost = (postId) => (dispatch) => {
+export const getPost = (postId: string) => (dispatch: Dispatch) => {
     dispatch({
         type: LOADING_UI
     })
@@ -132,7 +136,7 @@ export const getPost = (postId) => (dispatch) => {
         .catch(err => console.log(err))
 }
 
-export const commentOnPost = (postId, commentData) => (dispatch) => {
+export const commentOnPost = (postId: string, commentData: { body: string }) => (dispatch: Dispatch) => {
 
     axios.post(`/post/${postId}/comment`, commentData)
         .then(res => {
@@ -153,7 +157,7 @@ export const commentOnPost = (postId, commentData) => (dispatch) => {
         })
 }
 
-export const getUserPosts = (handle) => (dispatch) => {
+export const getUserPosts = (handle: string) => (dispatch: Dispatch) => {
     dispatch({
         type: LOADING_POSTS
     })
@@ -161,12 +165,12 @@ export const getUserPosts = (handle) => (dispatch) => {
     axios.get(`/user/${handle}`)
         .then(res => {
             let posts = res.data.posts
-            posts.forEach(post => {
+            posts.forEach((post: any) => {
                 changeObjKey(post, 'handle', 'userHandle')
                 changeObjKey(post, 'id', 'postId')
             })
 
-            posts = posts.map(post => {
+            posts = posts.map((post: any) => {
                 var modPost = Object.assign({}, post);
                 modPost.userImg = res.data.user.imgUrl
                 return modPost;

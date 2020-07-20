@@ -1,17 +1,34 @@
 import { useState } from 'react'
 
-export const useDetailForm = (formData) => {
+interface DetailFormType {
+    bio: string | '',
+    website: string | '',
+    location: string | '',
+}
+
+interface UserStateType {
+    location?: string,
+    website?: string,
+    bio?: string
+    imgUrl: string,
+    handle: string,
+    uid: string,
+    createdAt: string,
+    email: string,
+}
+
+export const useDetailForm = (formData: DetailFormType) => {
     const [data, setData] = useState(formData)
 
     return [
         data,
-        event => {
+        (event: React.ChangeEvent<HTMLInputElement>) => {
             setData({
                 ...data,
                 [event.target.name]: event.target.value
             })
         },
-        newData => {
+        (newData: DetailFormType) => {
             setData({
                 ...data,
                 ...newData
@@ -20,12 +37,12 @@ export const useDetailForm = (formData) => {
     ]
 }
 
-export const useUserState = (userData) => {
+export const useUserState = (userData: UserStateType) => {
     const [data, setData] = useState(userData)
 
     return [
         data,
-        newData => {
+        (newData: UserStateType) => {
             setData({
                 ...data,
                 ...newData
@@ -42,7 +59,7 @@ export const usePaths = () => {
 
     return [
         paths,
-        (oldPath, newPath) => {
+        (oldPath: string, newPath: string) => {
             setPaths({
                 oldPath,
                 newPath

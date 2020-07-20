@@ -8,8 +8,21 @@ import {
     MARK_NOTIFICATIONS_READ
 } from '../types'
 import axios from 'axios'
+import { Dispatch } from 'redux'
+import { History } from 'history'
 
-export const loginUser = (userData, history) => (dispatch) => {
+interface UserDataType {
+    email: string,
+    password: string
+}
+
+interface DetailsType {
+    bio: string,
+    website: string,
+    location: string
+}
+
+export const loginUser = (userData: UserDataType, history: History) => (dispatch: Dispatch<any>) => {
     dispatch({
         type: LOADING_UI
     })
@@ -32,7 +45,7 @@ export const loginUser = (userData, history) => (dispatch) => {
         })
 }
 
-export const signupUser = (userData, history) => (dispatch) => {
+export const signupUser = (userData: UserDataType, history: History) => (dispatch: Dispatch<any>) => {
     dispatch({
         type: LOADING_UI
     })
@@ -55,7 +68,7 @@ export const signupUser = (userData, history) => (dispatch) => {
         })
 }
 
-export const logoutUser = () => (dispatch) => {
+export const logoutUser = () => (dispatch: Dispatch) => {
     localStorage.removeItem('AuthToken')
     delete axios.defaults.headers.common['Authorization']
 
@@ -64,7 +77,7 @@ export const logoutUser = () => (dispatch) => {
     })
 }
 
-export const uploadImage = (formData) => (dispatch) => {
+export const uploadImage = (formData: any) => (dispatch: Dispatch<any>) => {
     dispatch({
         type: LOADING_USER
     })
@@ -75,7 +88,7 @@ export const uploadImage = (formData) => (dispatch) => {
         .catch(err => console.log(err.response.data))
 }
 
-export const editUser = (userDetails) => (dispatch) => {
+export const editUser = (userDetails: DetailsType) => (dispatch: Dispatch<any>) => {
     dispatch({
         type: LOADING_USER
     })
@@ -86,7 +99,7 @@ export const editUser = (userDetails) => (dispatch) => {
         .catch(err => console.log(err.response.data))
 }
 
-export const getUser = () => (dispatch) => {
+export const getUser = () => (dispatch: Dispatch) => {
     dispatch({
         type: LOADING_USER
     })
@@ -101,7 +114,7 @@ export const getUser = () => (dispatch) => {
         .catch(err => console.log(err))
 }
 
-export const markNotificationsRead = (notificationList) => (dispatch) => {
+export const markNotificationsRead = (notificationList: string[]) => (dispatch: Dispatch) => {
     axios.post('/notifications', notificationList)
         .then(res => {
             dispatch({
@@ -111,7 +124,7 @@ export const markNotificationsRead = (notificationList) => (dispatch) => {
         .catch(err => console.log(err))
 }
 
-const setToken = (token) => {
+const setToken = (token: string) => {
     const Authentication = `Bearer ${token}`
     localStorage.setItem('AuthToken', Authentication)
     axios.defaults.headers.common["Authorization"] = Authentication
