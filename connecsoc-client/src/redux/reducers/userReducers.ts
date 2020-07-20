@@ -8,7 +8,41 @@ import {
     MARK_NOTIFICATIONS_READ
 } from '../types'
 
-const initialState = {
+type CredentialsType = {
+    location?: string,
+    website?: string,
+    bio?: string,
+    imgUrl: string,
+    uid: string,
+    email: string,
+    createdAt: string,
+    handle: string
+}
+
+type LikesType = {
+    postId: string,
+    userHandle: string
+}
+
+type NotificationsType = {
+    notificationId: string,
+    read: boolean,
+    postId: string,
+    createdAt: string,
+    recipient: string,
+    sender: string,
+    type: string
+}
+
+export interface UserType {
+    authenticated: boolean,
+    loading: boolean,
+    credentials: CredentialsType | any,
+    likes: Array<LikesType>,
+    notifications: Array<NotificationsType>
+}
+
+const initialState: UserType = {
     authenticated: false,
     loading: false,
     credentials: {},
@@ -16,7 +50,7 @@ const initialState = {
     notifications: []
 }
 
-export default function (state = initialState, action) {
+export default function (state = initialState, action: any) {
     switch (action.type) {
         case SET_AUTHENTICATED:
             return {

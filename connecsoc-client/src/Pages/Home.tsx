@@ -6,8 +6,17 @@ import PostsSkeleton from '../utils/skeletons/PostsSkeleton'
 
 import { connect } from 'react-redux'
 import { getPosts } from '../redux/actions/dataActions'
+import { PostType } from '../redux/reducers/dataReducers'
+import { ReduxState } from '../redux/store'
 
-const Home = ({ getPosts, posts, loading }) => {
+interface Props {
+    getPosts: () => void,
+    posts: Array<PostType>,
+    loading: boolean
+}
+
+
+const Home: React.FC<Props> = ({ getPosts, posts, loading }) => {
 
     useEffect(() => {
         getPosts()
@@ -16,7 +25,7 @@ const Home = ({ getPosts, posts, loading }) => {
     let c = 0;
 
     let recentPosts = !loading ? (
-        posts.map((post) => (
+        posts.map((post: PostType) => (
             <div key={post.id}>
                 <Post post={post} index={c++} />
             </div>
@@ -41,10 +50,9 @@ const Home = ({ getPosts, posts, loading }) => {
     )
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: ReduxState) => ({
     posts: state.data.posts,
     loading: state.data.loading
-
 })
 
 const mapActionsToProps = {

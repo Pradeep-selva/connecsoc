@@ -15,7 +15,6 @@ const PostsSkeleton = () => {
                 image={noImg}
                 title="Profile" />
             <CardContent>
-                Loading
                 <div className="handle" />
                 <div className="date" />
                 <div className="fullLine" />

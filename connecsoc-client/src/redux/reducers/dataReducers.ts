@@ -9,16 +9,50 @@ import {
     ADD_COMMENT
 } from '../types'
 
-const initialState = {
+export type PostType = {
+    id: string,
+    handle: string,
+    body: string,
+    createdAt: string,
+    commentCount: number,
+    likeCount: number,
+    userImg: string
+}
+
+export type CommentType = {
+    createdAt: string,
+    postId: string,
+    bio: string,
+    userHandle: string,
+    userImg: string
+}
+
+export interface SinglePostType {
+    id: string,
+    handle: string,
+    userImg: string,
+    createdAt: string,
+    commentCount: number,
+    likeCount: number
+    body: string,
+    comments: Array<CommentType>
+}
+
+export interface DataType {
+    posts: Array<PostType>,
+    post: SinglePostType | any,
+    loading: boolean
+}
+
+const initialState: DataType = {
     posts: [],
     post: {},
     loading: false,
 }
 
-export default function (state = initialState, action) {
+export default function (state = initialState, action: any) {
     switch (action.type) {
         case SET_POSTS:
-            console.log(action.payload)
             return {
                 ...state,
                 posts: action.payload,

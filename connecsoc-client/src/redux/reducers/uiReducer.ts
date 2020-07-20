@@ -5,12 +5,17 @@ import {
     STOP_LOADING
 } from '../types'
 
-const initialState = {
+export interface UiType {
+    loading: boolean,
+    errors: any
+}
+
+const initialState: UiType = {
     loading: false,
     errors: {}
 }
 
-export default function (state = initialState, action) {
+export default function (state = initialState, action: any) {
     switch (action.type) {
         case SET_ERRORS:
             return {
