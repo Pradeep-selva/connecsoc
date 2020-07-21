@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import './Styles.css'
 
 import {
@@ -11,98 +11,71 @@ import {
 import { connect } from 'react-redux'
 import { commentOnPost } from '../../redux/actions/dataActions'
 
-class AddComment extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            body: '',
-            errors: {}
-        }
-
-        this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
-    }
-
-    handleChange(event) {
-        this.setState({
-            [event.target.name]: event.target.value
-        })
-    }
+const AddComment = (props) => {
+    const [body, setBody] = useState('')
 
     handleSubmit(event) {
         event.preventDefault();
+
         const {
             postId,
             commentOnPost
-        } = this.props
+        } = props
         const commentData = {
-            body: this.state.body
+            body
         }
         commentOnPost(postId, commentData)
 
-        this.setState({
-            body: '',
-            errors: {}
-        })
+        setBody('')
     }
 
-    static getDerivedStateFromProps(props, state) {
-        if (props.UI.errors) {
-            return {
-                errors: props.UI.errors
-            }
-        }
-    }
 
-    render() {
-        const {
-            UI: {
-                loading
-            },
-            authenticated
-        } = this.props;
-
-        const {
-            body,
+    const {
+        UI: {
+            loading,
             errors
-        } = this.state;
+        },
+        authenticated
+    } = props;
 
-        let addCommentMarkup = authenticated ? (
-            <Grid item sm={12}>
-                <form onSubmit={this.handleSubmit}>
-                    <TextField
-                        name="body"
-                        type="text"
-                        value={body}
-                        multiLine
-                        rows="3"
-                        fullWidth
-                        label="Add comment"
-                        error={errors && errors.comment}
-                        helperText={errors && errors.comment}
-                        onChange={this.handleChange}
-                    />
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        disabled={loading}
-                        color="primary"
-                        id="submit-button"
-                    >
-                        Submit
+    const {
+        body
+    } = this.state;
+
+    let addCommentMarkup = authenticated ? (
+        <Grid item sm={12}>
+            <form onSubmit={this.handleSubmit}>
+                <TextField
+                    name="body"
+                    type="text"
+                    value={body}
+                    multiLine
+                    rows="3"
+                    fullWidth
+                    label="Add comment"
+                    error={errors && errors.comment}
+                    helperText={errors && errors.comment}
+                    onChange={(event) => setBody(event.target.value)}
+                />
+                <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={loading}
+                    color="primary"
+                    id="submit-button"
+                >
+                    Submit
                         {
-                            loading &&
-                            (<CircularProgress id="progress" size={30} />)
-                        }
-                    </Button>
-                </form>
-            </Grid>
-        ) : null;
+                        loading &&
+                        (<CircularProgress id="progress" size={30} />)
+                    }
+                </Button>
+            </form>
+        </Grid>
+    ) : null;
 
-        return addCommentMarkup;
+    return addCommentMarkup;
 
-    }
 }
 
 const mapStateToProps = state => ({
