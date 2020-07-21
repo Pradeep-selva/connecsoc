@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CredentialsType } from '../redux/reducers/userReducers'
 
 interface DetailFormType {
     bio: string | '',
@@ -6,15 +7,30 @@ interface DetailFormType {
     location: string | '',
 }
 
-interface UserStateType {
-    location?: string,
-    website?: string,
-    bio?: string
-    imgUrl: string,
-    handle: string,
-    uid: string,
-    createdAt: string,
+interface SignupType {
     email: string,
+    password: string,
+    confirmPassword: string,
+    handle: string,
+}
+
+interface UserStateType {
+    profile?: CredentialsType | {},
+    userLoading?: boolean
+}
+
+export const useSignupForm = (formData: SignupType) => {
+    const [data, setData] = useState(formData)
+
+    return {
+        state: data,
+        handleChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+            setData({
+                ...data,
+                [event.target.name]: event.target.value
+            })
+        }
+    }
 }
 
 export const useDetailForm = (formData: DetailFormType) => {
@@ -40,15 +56,15 @@ export const useDetailForm = (formData: DetailFormType) => {
 export const useUserState = (userData: UserStateType) => {
     const [data, setData] = useState(userData)
 
-    return [
-        data,
-        (newData: UserStateType) => {
+    return {
+        userState: data,
+        setUserState: (newData: UserStateType) => {
             setData({
                 ...data,
                 ...newData
             })
         }
-    ]
+    }
 }
 
 export const usePaths = () => {

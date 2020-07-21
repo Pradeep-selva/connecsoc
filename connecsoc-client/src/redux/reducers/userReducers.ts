@@ -8,7 +8,7 @@ import {
     MARK_NOTIFICATIONS_READ
 } from '../types'
 
-type CredentialsType = {
+export type CredentialsType = {
     location?: string,
     website?: string,
     bio?: string,

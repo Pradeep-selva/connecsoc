@@ -5,14 +5,26 @@ import { Grid } from '@material-ui/core'
 
 import { connect } from 'react-redux'
 import { getUserPosts } from '../redux/actions/dataActions'
+import { PostType } from '../redux/reducers/dataReducers'
+import { ReduxState } from '../redux/store'
 
 import Post from '../Components/Post/Index'
 import UserStaticProfile from '../Components/UserStaticProfile/Index'
 import { useUserState } from '../utils/customHooks'
 import PostsSkeleton from '../utils/skeletons/PostsSkeleton'
 
-const UserPage = (props) => {
-    const [userState, setUserState] = useUserState({
+interface StateProps {
+    posts: Array<PostType>,
+    postLoading: boolean,
+    match?: any
+}
+
+interface ActionProps {
+    getUserPosts: (handle: string) => any
+}
+
+const UserPage: React.FC<StateProps & ActionProps> = (props) => {
+    const { userState, setUserState } = useUserState({
         profile: {},
         userLoading: false
     })
@@ -103,12 +115,12 @@ const UserPage = (props) => {
 }
 
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: ReduxState): StateProps => ({
     posts: state.data.posts,
     postLoading: state.data.loading
 })
 
-const mapActionsToProps = {
+const mapActionsToProps: ActionProps = {
     getUserPosts
 }
 

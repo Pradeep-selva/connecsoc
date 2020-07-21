@@ -2,31 +2,54 @@ import React, { Component } from 'react'
 import { FaAddressCard } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { Typography, TextField, Grid, Button, CircularProgress } from '@material-ui/core'
+import { History } from 'history'
 import './pageStyles.css'
 
 import { connect } from 'react-redux'
 import { loginUser } from '../redux/actions/userActions'
+import { UiType } from '../redux/reducers/uiReducer'
+import { UserType } from '../redux/reducers/userReducers'
+import { ReduxState } from '../redux/store'
+
+interface UserDataType {
+    email: string,
+    password: string
+}
+
+interface State {
+    email: string,
+    password: string,
+}
+
+interface StateProps {
+    UI: UiType,
+    user: UserType,
+    history?: any
+}
+
+interface ActionProps {
+    loginUser: (userData: UserDataType, history: History) => any
+}
 
 
-class Login extends Component {
+class Login extends Component<StateProps & ActionProps, State> {
 
-    constructor(props) {
+    constructor(props: StateProps & ActionProps) {
         super(props)
 
         this.state = {
             email: '',
             password: '',
-            errors: {}
         }
 
         this.handleSubmit = this.handleSubmit.bind(this)
         this.onChange = this.onChange.bind(this)
     }
 
-    handleSubmit = (event) => {
+    handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
-        const userData = {
+        const userData: UserDataType = {
             email: this.state.email,
             password: this.state.password
         }
@@ -35,28 +58,19 @@ class Login extends Component {
 
     }
 
-    onChange = (event) => {
+    onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({
             [event.target.name]: event.target.value
-        })
-    }
-
-    static getDerivedStateFromProps(props, state) {
-        if (props.UI.errors) {
-            return {
-                errors: props.UI.errors
-            }
-        }
+        } as Pick<State, keyof State>)
     }
 
     render() {
         const {
             email,
             password,
-            errors
         } = this.state
 
-        const { UI: { loading } } = this.props
+        const { UI: { loading, errors } } = this.props
 
         return (
             <div>
@@ -65,7 +79,7 @@ class Login extends Component {
                     <Grid item sm>
                         <div className="login">
                             <FaAddressCard size={50} />
-                            <Typography variant="h1" class="title">
+                            <Typography variant="h1" id="title">
                                 Login
                             </Typography>
                             <form noValidate onSubmit={this.handleSubmit}>
@@ -125,14 +139,14 @@ class Login extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: ReduxState): StateProps => ({
     user: state.user,
     UI: state.UI
 })
 
-const mapActionsToProps = {
+const mapActionsToProps: ActionProps = {
     loginUser
 }
 
 
-export default connect(mapStateToProps, mapActionsToProps)(Login)
+export default connect<StateProps, ActionProps, StateProps & ActionProps, ReduxState>(mapStateToProps, mapActionsToProps)(Login)

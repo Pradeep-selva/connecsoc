@@ -9,9 +9,15 @@ import { UserType } from './reducers/userReducers'
 import { DataType } from './reducers/dataReducers'
 import { UiType } from './reducers/uiReducer'
 
+export type ReduxState = {
+    user: UserType,
+    data: DataType,
+    UI: UiType
+}
+
 const initialState = {}
 
-const reducers = combineReducers({
+const reducers = combineReducers<ReduxState>({
     user: userReducer,
     data: dataReducer,
     UI: uiReducer
@@ -25,11 +31,5 @@ const store = createStore(
     compose(applyMiddleware(...middleware),
         (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__())
 )
-
-export type ReduxState = {
-    user: UserType,
-    data: DataType,
-    UI: UiType
-}
 
 export default store
