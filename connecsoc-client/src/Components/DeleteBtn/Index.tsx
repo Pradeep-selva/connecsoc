@@ -13,13 +13,18 @@ import { FaRegTrashAlt } from 'react-icons/fa'
 
 import { connect } from 'react-redux'
 import { deletePost } from '../../redux/actions/dataActions'
+import { AppThunkAction } from '../../redux/store'
 
-const DeleteBtn = ({ deletePost, id }) => {
+interface Props {
+    deletePost: (postId: string) => AppThunkAction,
+    id: string
+}
+
+const DeleteBtn: React.FC<Props> = ({ deletePost, id }) => {
     const [open, setOpen] = useState(false)
 
     const handleDelete = () => {
         deletePost(id)
-
         setOpen(true)
     }
 

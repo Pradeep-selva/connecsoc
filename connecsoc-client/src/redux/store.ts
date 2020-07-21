@@ -1,4 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
+import { Action } from '@reduxjs/toolkit'
+import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 import thunk from 'redux-thunk'
 
 import userReducer from './reducers/userReducers'
@@ -24,6 +26,10 @@ const reducers = combineReducers<ReduxState>({
 })
 
 const middleware = [thunk]
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppThunkAction = ThunkAction<any, RootState, any, Action<any>>;
+export type AppThunk = ThunkDispatch<ReduxState, void, Action>;
 
 const store = createStore(
     reducers,

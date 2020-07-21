@@ -10,6 +10,7 @@ import { loginUser } from '../redux/actions/userActions'
 import { UiType } from '../redux/reducers/uiReducer'
 import { UserType } from '../redux/reducers/userReducers'
 import { ReduxState } from '../redux/store'
+import { AppThunkAction } from '../redux/store'
 
 interface UserDataType {
     email: string,
@@ -28,7 +29,7 @@ interface StateProps {
 }
 
 interface ActionProps {
-    loginUser: (userData: UserDataType, history: History) => any
+    loginUser: (userData: UserDataType, history: History) => AppThunkAction
 }
 
 

@@ -36,21 +36,21 @@ export const useSignupForm = (formData: SignupType) => {
 export const useDetailForm = (formData: DetailFormType) => {
     const [data, setData] = useState(formData)
 
-    return [
-        data,
-        (event: React.ChangeEvent<HTMLInputElement>) => {
+    return {
+        data: data,
+        handleChange: (event: React.ChangeEvent<HTMLInputElement>) => {
             setData({
                 ...data,
                 [event.target.name]: event.target.value
             })
         },
-        (newData: DetailFormType) => {
+        mapData: (newData: DetailFormType) => {
             setData({
                 ...data,
                 ...newData
             })
         }
-    ]
+    }
 }
 
 export const useUserState = (userData: UserStateType) => {
@@ -73,13 +73,13 @@ export const usePaths = () => {
         newPath: ''
     })
 
-    return [
-        paths,
-        (oldPath: string, newPath: string) => {
+    return {
+        paths: paths,
+        setPaths: (oldPath: string, newPath: string) => {
             setPaths({
                 oldPath,
                 newPath
             })
         }
-    ]
+    }
 }

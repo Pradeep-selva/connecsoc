@@ -12,6 +12,7 @@ import Post from '../Components/Post/Index'
 import UserStaticProfile from '../Components/UserStaticProfile/Index'
 import { useUserState } from '../utils/customHooks'
 import PostsSkeleton from '../utils/skeletons/PostsSkeleton'
+import { AppThunkAction } from '../redux/store'
 
 interface StateProps {
     posts: Array<PostType>,
@@ -20,7 +21,7 @@ interface StateProps {
 }
 
 interface ActionProps {
-    getUserPosts: (handle: string) => any
+    getUserPosts: (handle: string) => AppThunkAction
 }
 
 const UserPage: React.FC<StateProps & ActionProps> = (props) => {

@@ -16,12 +16,29 @@ import { FaExpandAlt, FaRegWindowClose, FaCommentDots } from 'react-icons/fa'
 
 import { connect } from 'react-redux'
 import { getPost } from '../../redux/actions/dataActions'
+import { SinglePostType } from '../../redux/reducers/dataReducers'
+import { AppThunkAction, ReduxState } from '../../redux/store'
 
 import LikeButton from '../LikeButton/Index'
 import Comments from '../Comments/Index'
 import { usePaths } from '../../utils/customHooks'
 
-const ExpandPost = ({
+interface PassedProps {
+    postId: string,
+    openPost: boolean,
+    userHandle: string
+}
+
+interface StateProps {
+    post: SinglePostType,
+    loading: boolean
+}
+
+interface ActionProps {
+    getPost: (postId: string) => AppThunkAction
+}
+
+const ExpandPost: React.FC<PassedProps & StateProps & ActionProps> = ({
     post: {
         id,
         createdAt,
@@ -39,7 +56,7 @@ const ExpandPost = ({
     userHandle
 }) => {
     const [open, setOpen] = useState(false)
-    const [paths, setPaths] = usePaths()
+    const { paths, setPaths } = usePaths()
 
     const handleOpen = () => {
         let oldPath = window.location.pathname
@@ -48,7 +65,7 @@ const ExpandPost = ({
         if (oldPath === newPath)
             oldPath = `users/${userHandle}`
 
-        window.history.pushState(null, null, newPath)
+        window.history.pushState(null, String(null), newPath)
 
         setPaths(oldPath, newPath)
         setOpen(true)
@@ -56,7 +73,7 @@ const ExpandPost = ({
     }
 
     const handleClose = () => {
-        window.history.pushState(null, null, paths.oldPath)
+        window.history.pushState(null, String(null), paths.oldPath)
         setOpen(false)
     }
 
@@ -175,12 +192,12 @@ const ExpandPost = ({
 }
 
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: ReduxState): StateProps => ({
     loading: state.UI.loading,
     post: state.data.post
 })
 
-const mapActionsToProps = {
+const mapActionsToProps: ActionProps = {
     getPost
 }
 

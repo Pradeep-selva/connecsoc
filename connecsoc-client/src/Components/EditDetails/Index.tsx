@@ -11,20 +11,32 @@ import './Styles.css'
 
 import { connect } from 'react-redux'
 import { editUser } from '../../redux/actions/userActions'
+import { CredentialsType } from '../../redux/reducers/userReducers'
+import { DetailsType } from '../../redux/actions/userActions'
+import { AppThunkAction } from '../../redux/store'
+import { ReduxState } from '../../redux/store'
 
 import { useDetailForm } from '../../utils/customHooks'
 
+interface StateProps {
+    credentials: CredentialsType,
+}
 
-const EditDetails = ({ credentials, editUser }) => {
+interface ActionProps {
+    editUser: (userDetails: DetailsType) => AppThunkAction
+}
+
+
+const EditDetails: React.FC<StateProps & ActionProps> = ({ credentials, editUser }) => {
 
     const [open, setOpen] = useState(false)
-    const [data, handleChange, mapData] = useDetailForm({
+    const { data, handleChange, mapData } = useDetailForm({
         bio: '',
         website: '',
         location: ''
     })
 
-    const mapDetailsToProps = (credentials) => {
+    const mapDetailsToProps = (credentials: CredentialsType) => {
         mapData({
             bio: credentials.bio ? credentials.bio : '',
             website: credentials.website ? credentials.website : '',
@@ -132,11 +144,11 @@ const EditDetails = ({ credentials, editUser }) => {
 
 
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: ReduxState): StateProps => ({
     credentials: state.user.credentials
 })
 
-const mapActionsToProps = {
+const mapActionsToProps: ActionProps = {
     editUser
 }
 

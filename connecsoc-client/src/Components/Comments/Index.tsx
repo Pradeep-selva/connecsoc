@@ -6,7 +6,14 @@ import './Styles.css'
 
 import { Typography, Grid } from '@material-ui/core'
 
-const Comments = ({ comments, postId }) =>
+import { CommentType } from '../../redux/reducers/dataReducers'
+
+interface Props {
+    comments: Array<CommentType>,
+    postId: any
+}
+
+const Comments: React.FC<Props> = ({ comments, postId }) =>
     <Grid container id="comment-grid">
         <AddComment postId={postId} />
         {

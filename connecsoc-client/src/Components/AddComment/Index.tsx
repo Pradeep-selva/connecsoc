@@ -10,11 +10,26 @@ import {
 
 import { connect } from 'react-redux'
 import { commentOnPost } from '../../redux/actions/dataActions'
+import { UiType } from '../../redux/reducers/uiReducer'
+import { ReduxState } from '../../redux/store'
 
-const AddComment = (props) => {
-    const [body, setBody] = useState('')
+interface PassedProps extends React.Props<any> {
+    postId: any
+}
 
-    handleSubmit(event) {
+interface StateProps {
+    UI: UiType,
+    authenticated: boolean
+}
+
+interface ActionProps {
+    commentOnPost: (postId: string, commentData: { body: string }) => any
+}
+
+const AddComment: React.FC<StateProps & ActionProps & PassedProps> = (props) => {
+    const [body, setBody] = useState<string>('')
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const {
@@ -38,18 +53,13 @@ const AddComment = (props) => {
         authenticated
     } = props;
 
-    const {
-        body
-    } = this.state;
-
     let addCommentMarkup = authenticated ? (
         <Grid item sm={12}>
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <TextField
                     name="body"
                     type="text"
                     value={body}
-                    multiLine
                     rows="3"
                     fullWidth
                     label="Add comment"
@@ -78,13 +88,13 @@ const AddComment = (props) => {
 
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: ReduxState): StateProps => ({
     UI: state.UI,
     authenticated: state.user.authenticated
 })
 
-const mapActionsToProps = {
+const mapActionsToProps: ActionProps = {
     commentOnPost
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(AddComment)
+export default connect<any, any, any, any>(mapStateToProps, mapActionsToProps)(AddComment)

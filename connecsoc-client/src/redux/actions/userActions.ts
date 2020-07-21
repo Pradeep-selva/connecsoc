@@ -8,21 +8,21 @@ import {
     MARK_NOTIFICATIONS_READ
 } from '../types'
 import axios from 'axios'
-import { Dispatch } from 'redux'
 import { History } from 'history'
+import { AppThunk, AppThunkAction } from '../store'
 
 interface UserDataType {
     email: string,
     password: string
 }
 
-interface DetailsType {
+export interface DetailsType {
     bio: string,
     website: string,
     location: string
 }
 
-export const loginUser = (userData: UserDataType, history: History) => (dispatch: Dispatch<any>) => {
+export const loginUser = (userData: UserDataType, history: History): AppThunkAction => (dispatch: AppThunk) => {
     dispatch({
         type: LOADING_UI
     })
@@ -45,7 +45,7 @@ export const loginUser = (userData: UserDataType, history: History) => (dispatch
         })
 }
 
-export const signupUser = (userData: UserDataType, history: History) => (dispatch: Dispatch<any>) => {
+export const signupUser = (userData: UserDataType, history: History): AppThunkAction => (dispatch: AppThunk) => {
     dispatch({
         type: LOADING_UI
     })
@@ -68,7 +68,7 @@ export const signupUser = (userData: UserDataType, history: History) => (dispatc
         })
 }
 
-export const logoutUser = () => (dispatch: Dispatch) => {
+export const logoutUser = (): any => (dispatch: AppThunk) => {
     localStorage.removeItem('AuthToken')
     delete axios.defaults.headers.common['Authorization']
 
@@ -77,7 +77,7 @@ export const logoutUser = () => (dispatch: Dispatch) => {
     })
 }
 
-export const uploadImage = (formData: any) => (dispatch: Dispatch<any>) => {
+export const uploadImage = (formData: any): AppThunkAction => (dispatch: AppThunk) => {
     dispatch({
         type: LOADING_USER
     })
@@ -88,7 +88,7 @@ export const uploadImage = (formData: any) => (dispatch: Dispatch<any>) => {
         .catch(err => console.log(err.response.data))
 }
 
-export const editUser = (userDetails: DetailsType) => (dispatch: Dispatch<any>) => {
+export const editUser = (userDetails: DetailsType): AppThunkAction => (dispatch: AppThunk) => {
     dispatch({
         type: LOADING_USER
     })
@@ -99,7 +99,7 @@ export const editUser = (userDetails: DetailsType) => (dispatch: Dispatch<any>) 
         .catch(err => console.log(err.response.data))
 }
 
-export const getUser = () => (dispatch: Dispatch) => {
+export const getUser = (): any => (dispatch: AppThunk) => {
     dispatch({
         type: LOADING_USER
     })
@@ -114,7 +114,7 @@ export const getUser = () => (dispatch: Dispatch) => {
         .catch(err => console.log(err))
 }
 
-export const markNotificationsRead = (notificationList: string[]) => (dispatch: Dispatch) => {
+export const markNotificationsRead = (notificationList: string[]): AppThunkAction => (dispatch: AppThunk) => {
     axios.post('/notifications', notificationList)
         .then(res => {
             dispatch({

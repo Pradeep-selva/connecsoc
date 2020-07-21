@@ -34,10 +34,10 @@ const theme = createMuiTheme({
   }
 })
 
-const token = localStorage.AuthToken;
+const token: string = localStorage.AuthToken;
 
 if (token) {
-  const decoded = jwtDecode(token)
+  const decoded: any = jwtDecode(token)
 
   if (decoded.exp * 1000 < Date.now()) {
     store.dispatch(logoutUser())

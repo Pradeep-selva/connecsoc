@@ -13,7 +13,8 @@ import {
     STOP_LOADING,
     ADD_COMMENT
 } from '../types'
-import { Dispatch } from 'redux'
+import { AppThunk, AppThunkAction } from '../store'
+
 
 
 const changeObjKey = (data: any, newKey: string, oldKey: string) => {
@@ -28,7 +29,7 @@ const changeObjKey = (data: any, newKey: string, oldKey: string) => {
 }
 
 
-export const getPosts = () => (dispatch: Dispatch) => {
+export const getPosts = (): AppThunkAction => (dispatch: AppThunk) => {
     dispatch({
         type: LOADING_POSTS
     })
@@ -48,7 +49,7 @@ export const getPosts = () => (dispatch: Dispatch) => {
         })
 }
 
-export const likePost = (postId: string) => (dispatch: Dispatch) => {
+export const likePost = (postId: string): AppThunkAction => (dispatch: AppThunk) => {
     axios.get(`/post/${postId}/like`)
         .then(res => {
             res.data = changeObjKey(res.data, 'handle', 'userHandle')
@@ -61,7 +62,7 @@ export const likePost = (postId: string) => (dispatch: Dispatch) => {
         .catch(err => console.log(err))
 }
 
-export const unlikePost = (postId: string) => (dispatch: Dispatch) => {
+export const unlikePost = (postId: string): AppThunkAction => (dispatch: AppThunk) => {
     axios.get(`/post/${postId}/unlike`)
         .then(res => {
             res.data = changeObjKey(res.data, 'handle', 'userHandle')
@@ -74,7 +75,7 @@ export const unlikePost = (postId: string) => (dispatch: Dispatch) => {
         .catch(err => console.log(err))
 }
 
-export const addPost = (postData: { body: string }) => (dispatch: Dispatch) => {
+export const addPost = (postData: { body: string }): AppThunkAction => (dispatch: AppThunk) => {
     dispatch({
         type: LOADING_UI
     })
@@ -102,7 +103,7 @@ export const addPost = (postData: { body: string }) => (dispatch: Dispatch) => {
         })
 }
 
-export const deletePost = (postId: string) => (dispatch: Dispatch) => {
+export const deletePost = (postId: string): AppThunkAction => (dispatch: AppThunk) => {
 
     axios.delete(`/post/${postId}`)
         .then(res => {
@@ -114,7 +115,7 @@ export const deletePost = (postId: string) => (dispatch: Dispatch) => {
         .catch(err => console.log(err))
 }
 
-export const getPost = (postId: string) => (dispatch: Dispatch) => {
+export const getPost = (postId: string): AppThunkAction => (dispatch: AppThunk) => {
     dispatch({
         type: LOADING_UI
     })
@@ -136,7 +137,7 @@ export const getPost = (postId: string) => (dispatch: Dispatch) => {
         .catch(err => console.log(err))
 }
 
-export const commentOnPost = (postId: string, commentData: { body: string }) => (dispatch: Dispatch) => {
+export const commentOnPost = (postId: string, commentData: { body: string }): AppThunkAction => (dispatch: AppThunk) => {
 
     axios.post(`/post/${postId}/comment`, commentData)
         .then(res => {
@@ -157,7 +158,7 @@ export const commentOnPost = (postId: string, commentData: { body: string }) => 
         })
 }
 
-export const getUserPosts = (handle: string) => (dispatch: Dispatch) => {
+export const getUserPosts = (handle: string): AppThunkAction => (dispatch: AppThunk) => {
     dispatch({
         type: LOADING_POSTS
     })

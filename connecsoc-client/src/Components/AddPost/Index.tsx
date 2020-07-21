@@ -14,10 +14,27 @@ import { FaPlusCircle } from 'react-icons/fa'
 
 import { connect } from 'react-redux'
 import { addPost } from '../../redux/actions/dataActions'
+import { UiType } from '../../redux/reducers/uiReducer'
+import { ReduxState } from '../../redux/store'
+import { AppThunkAction } from '../../redux/store'
+
+interface StateType {
+    body: string,
+    errors: any,
+    open: boolean
+}
+
+interface StateProps {
+    UI: UiType
+}
+
+interface ActionProps {
+    addPost: (postData: { body: string }) => AppThunkAction
+}
 
 
-class AddPost extends Component {
-    constructor(props) {
+class AddPost extends Component<StateProps & ActionProps, StateType> {
+    constructor(props: Readonly<StateProps & ActionProps>) {
         super(props)
 
         this.state = {
@@ -46,10 +63,10 @@ class AddPost extends Component {
         })
     }
 
-    handleChange = (event) => {
+    handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({
             [event.target.name]: event.target.value
-        })
+        } as unknown as Pick<StateType, keyof StateType>)
     }
 
     handleSubmit = () => {
@@ -139,11 +156,11 @@ class AddPost extends Component {
 
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: ReduxState): StateProps => ({
     UI: state.UI
 })
 
-const mapActionsToProps = {
+const mapActionsToProps: ActionProps = {
     addPost
 }
 
