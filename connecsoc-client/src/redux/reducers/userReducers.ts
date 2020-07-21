@@ -19,12 +19,12 @@ export type CredentialsType = {
     handle: string
 }
 
-type LikesType = {
+export type LikesType = {
     postId: string,
     userHandle: string
 }
 
-type NotificationsType = {
+export type NotificationsType = {
     notificationId: string,
     read: boolean,
     postId: string,

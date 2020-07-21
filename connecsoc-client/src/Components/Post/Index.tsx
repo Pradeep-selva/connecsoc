@@ -14,12 +14,26 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import './Styles.css'
 
 import { connect } from 'react-redux'
+import { PostType } from '../../redux/reducers/dataReducers'
+import { ReduxState } from '../../redux/store'
 
 import LikeButton from '../LikeButton/Index'
 import DeleteBtn from '../DeleteBtn/Index'
 import ExpandPost from '../ExpandPost/Index'
 
-const Post = (props) => {
+interface StateProps {
+    posts: Array<PostType>,
+    userHandle: string
+}
+
+interface PassedProps {
+    index: number,
+    openPost: boolean,
+    post: PostType
+}
+
+
+const Post: React.FC<StateProps & PassedProps> = (props) => {
     const {
         post: {
             id,
@@ -95,9 +109,9 @@ const Post = (props) => {
 
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: ReduxState): StateProps => ({
     userHandle: state.user.credentials.handle,
     posts: state.data.posts
 })
 
-export default connect(mapStateToProps)(Post)
+export default connect<any, any, any, any>(mapStateToProps)(Post)

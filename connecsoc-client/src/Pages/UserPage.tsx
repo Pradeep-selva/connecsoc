@@ -107,7 +107,7 @@ const UserPage: React.FC<StateProps & ActionProps> = (props) => {
                 <Grid item sm={4} xs={12}>
                     <UserStaticProfile
                         profile={profile}
-                        loading={userLoading}
+                        loading={userLoading!}
                     />
                 </Grid>
             </Grid>

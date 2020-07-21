@@ -8,8 +8,13 @@ import { FaCalendarAlt, FaSearchLocation, FaGlobe } from 'react-icons/fa'
 import { Paper, Typography } from '@material-ui/core'
 import MuiLink from '@material-ui/core/Link'
 
+interface Props {
+    profile: any,
+    loading: boolean
+}
 
-const UserStaticProfile = (props) => {
+
+const UserStaticProfile: React.FC<Props> = (props) => {
     const {
         profile: {
             createdAt,

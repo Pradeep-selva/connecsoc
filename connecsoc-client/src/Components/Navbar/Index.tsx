@@ -18,9 +18,14 @@ import AddPost from '../AddPost/Index'
 import Notifications from '../Notifications/Index'
 
 import { connect } from 'react-redux'
+import { ReduxState } from '../../redux/store'
+
+interface Props {
+    authenticated: boolean
+}
 
 
-const Navbar = (props) =>
+const Navbar: React.FC<Props> = (props) =>
     <div>
         <AppBar>
             <Toolbar>
@@ -32,7 +37,6 @@ const Navbar = (props) =>
                 <Typography
                     id="brand"
                     color="inherit"
-                    edge="start"
                     variant="h3"
                     style={{ flexGrow: 1 }}>
                     Connecsoc
@@ -76,7 +80,7 @@ const Navbar = (props) =>
     </div >
 
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: ReduxState): Props => ({
     authenticated: state.user.authenticated
 })
 

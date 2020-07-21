@@ -10,7 +10,11 @@ import {
 import { connect } from 'react-redux'
 import { logoutUser } from '../../redux/actions/userActions'
 
-const Logout = ({ logoutUser }) => {
+interface Props {
+    logoutUser: () => any
+}
+
+const Logout: React.FC<Props> = ({ logoutUser }) => {
     const [open, setOpen] = useState(false)
 
     const handleLogout = () => {

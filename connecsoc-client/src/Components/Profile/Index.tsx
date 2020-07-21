@@ -11,21 +11,28 @@ import './Styles.css'
 
 import { connect } from 'react-redux'
 import { uploadImage } from '../../redux/actions/userActions'
+import { UserType } from '../../redux/reducers/userReducers'
+import { ReduxState, AppThunkAction } from '../../redux/store'
 
-const handleImageChange = (event, uploadImage) => {
-    const image = event.target.files[0]
+interface StateProps {
+    user: UserType
+}
+
+interface ActionProps {
+    uploadImage: (formData: any) => AppThunkAction
+}
+
+
+const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>, uploadImage: (formData: any) => AppThunkAction) => {
+
+    const image = event.target && event.target.files![0]
     const formData = new FormData()
 
     formData.append('image', image, image.name)
     uploadImage(formData)
 }
 
-const handleClick = () => {
-    const imageUpload = document.getElementById("inputFile")
-    imageUpload.click()
-}
-
-const Profile = (props) => {
+const Profile: React.FC<StateProps & ActionProps> = (props) => {
     const {
         user: {
             credentials: {
@@ -42,6 +49,12 @@ const Profile = (props) => {
         uploadImage
     } = props
 
+
+    const handleClick = () => {
+        const imageUpload: any = document.getElementById("inputFile")
+        imageUpload.click()
+    }
+
     if (loading) {
         return <UserSkeleton />
     }
@@ -55,13 +68,12 @@ const Profile = (props) => {
                     <input
                         type="file"
                         id="inputFile"
-                        hidden="hidden"
+                        hidden={true}
                         onChange={(event) => handleImageChange(event, uploadImage)}
                     />
                     <div className="img-edit">
                         <Tooltip
                             title="Edit profile picture"
-                            position="bottom"
                         >
                             <IconButton onClick={handleClick}>
                                 <MdModeEdit size={30} style={{ color: "52a178" }} />
@@ -162,11 +174,11 @@ const Profile = (props) => {
 }
 
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: ReduxState): StateProps => ({
     user: state.user
 })
 
-const mapActionsToProps = {
+const mapActionsToProps: ActionProps = {
     uploadImage
 }
 

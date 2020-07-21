@@ -9,10 +9,25 @@ import { FaStar, FaRegStar } from 'react-icons/fa'
 
 import { connect } from 'react-redux'
 import { likePost, unlikePost } from '../../redux/actions/dataActions'
+import { AppThunkAction, ReduxState } from '../../redux/store'
+import { LikesType } from '../../redux/reducers/userReducers'
 
+interface PassedProps {
+    id: string
+}
 
-const LikeButton = ({ id, authenticated, likes, likePost, unlikePost }) => {
-    const isLiked = (likes, postId) => {
+interface StateProps {
+    authenticated: boolean,
+    likes: Array<LikesType>
+}
+
+interface ActionProps {
+    likePost: (postId: string) => AppThunkAction,
+    unlikePost: (postId: string) => AppThunkAction
+}
+
+const LikeButton: React.FC<PassedProps & StateProps & ActionProps> = ({ id, authenticated, likes, likePost, unlikePost }) => {
+    const isLiked = (likes: Array<LikesType>, postId: string) => {
         if (likes && likes.find(like => like.postId === postId)) {
             return true
         } else {
@@ -57,12 +72,12 @@ const LikeButton = ({ id, authenticated, likes, likePost, unlikePost }) => {
     return likeButton;
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: ReduxState): StateProps => ({
     authenticated: state.user.authenticated,
     likes: state.user.likes
 })
 
-const mapActionsToProps = {
+const mapActionsToProps: ActionProps = {
     likePost,
     unlikePost
 }
