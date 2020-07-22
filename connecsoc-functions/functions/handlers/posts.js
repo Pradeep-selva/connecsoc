@@ -11,7 +11,7 @@ exports.getAllPosts = (req, res) => {
 
             data.forEach(doc => {
                 posts.push({
-                    postId: doc.id,
+                    id: doc.id,
                     handle: doc.data().userHandle,
                     body: doc.data().body,
                     createdAt: doc.data().createdAt,

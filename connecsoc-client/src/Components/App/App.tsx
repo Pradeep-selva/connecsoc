@@ -17,6 +17,8 @@ import store from '../../redux/store'
 import { SET_AUTHENTICATED } from '../../redux/types'
 import { logoutUser, getUser } from '../../redux/actions/userActions'
 
+axios.defaults.baseURL = "https://asia-east2-connecsoc.cloudfunctions.net/api";
+
 const theme = createMuiTheme({
   palette: {
     primary: {
